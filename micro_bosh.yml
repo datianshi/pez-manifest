@@ -1,0 +1,128 @@
+---
+name: microbosh-99803a3aa5e5a32d78c7
+env:
+  bosh:
+    password: "$6$0b3b21bda1e334fb$Q3XNk4gevkx0R5BOiADl7lF6XNleaD78iSNEdvJdsjPfSNxu.E2W6ML/rgbpW7XG1FNksSGmNCTIErvZO6U2g1"
+  vapp: pcf_catalog_microbosh
+resources:
+  persistent_disk: 40960
+  cloud_properties:
+    ram: 3072
+    disk: 25600
+    cpu: 2
+network:
+  ip: 10.65.233.131
+  type: manual
+  dns:
+  - 10.65.233.129
+  gateway: 10.65.233.129
+  netmask: 255.255.255.128
+  cloud_properties:
+    name: sding-rognet-routed
+cloud:
+  properties:
+    agent:
+      ntp: &1
+      - 0.ubuntu.pool.ntp.org
+      mbus: https://vcap:ade05f37b63723b30697@0.0.0.0:6868
+    vcds:
+    - url: [url]
+      user: [username]
+      password: [password]
+      entities:
+        organization: sding-org
+        virtual_datacenter: sding-ovdc
+        vapp_catalog: pcf_catalog
+        media_catalog: pcf_catalog
+        media_storage_profile: vCD-vSAN-Capacity-01
+        vm_metadata_key: cf-agent-env
+        description: Bosh on vCloud director
+        control:
+          wait_max: 1200
+  plugin: vcloud
+apply_spec:
+  properties:
+    ntp: *1
+    dns:
+      recursor: 10.65.233.129
+    nats:
+      user: nats
+      password: e1248f5a5dffaa217bed
+    redis:
+      password: ea5f10f0fd8e69c969b8
+    postgres:
+      user: postgres
+      password: c88f764b7de77b4947ff
+    blobstore:
+      director:
+        user: blobstore
+        password: fbc780e8b622e6b3c151
+      agent:
+        user: blobstore
+        password: fbc780e8b622e6b3c151
+    hm:
+      http:
+        port: 25923
+        user: health_monitor
+        password: beb3bc393b2582e0e607
+      director_account:
+        user: director
+        password: e57c7d9d417e6064d01e
+      resurrector_enabled: false
+      tsdb_enabled: false
+      tsdb:
+        address: 
+        port: 13321
+    director:
+      ssl:
+        key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIIEpAIBAAKCAQEAsGbLQFYXWZj3a4hbADKebpR9My/gDeVIY+yuanEKxgbi3+Ea
+          N7oEIuzjfv+E69UQDY9+ZKYg2atZdEtWk9bs+M9yqgUxxAHNC6q5d0TdS1xz9b7I
+          UUEPi7RtnitHv02aB/eJFhQIggZ1keb9w428PaOAr5bKUcxlefEXCDhWeGPaTV4r
+          tfdHpy4O0UdsfV5Ha5dq4A/q/4LCDLFOlpUwOPJxH3xQYSXF21+HjxMDeBlUGKxS
+          lpwYm6WqiaRnnG6+lBhFRHqAh0atln8f8M+XK9dtqrZzNGisqF6W2Lxs60SkxYxk
+          rK/D8rSSWzVclcP1gmv/+rIsJScelkltc1Rh2QIDAQABAoIBAQCkYMWZyB+uIDq+
+          +6tA/epgxQH+BujUSgoxA0ZsbbZKXfRgBxU1RKPCH9jGaTjlwf9Zg5OWGrCV5XRQ
+          SDv/O9JK8JS7FmgPbFY0PvzgxU0pgpeUMhncjbH8zz8umsoa3CdisSoPZs+eyoIY
+          WZWy+oqlLY0nEm6p1rvg6+Y4hLcfKvEfBEYg3ZQA8XZCiCbBZq+zsozkgbc6Senx
+          nUdbCWNx6gmuanab/SIfaMZ0ZXFwIZCD9/Xz1TmpeRhe7rSRs4tnZ29i4OE8OzgB
+          fDiW64DjjNcEdW9lZDLagdpdaptc7SReKu6A1g0sanPY4ENq7lahQyhhWenM5KbI
+          HrTthYLZAoGBANUlzj90ms3yqReVuS8Q5zLOLBZjMCtl76VyZ9cugGQ0n0wANy2F
+          39rdbpqe010weh7MWSeWeLDCR8clf0+udoen+uQ2l9uY2eHAx3xrvEN8DNzOQklr
+          809lY+Se6axdWK7Rx25NrOYZosquoQ89sRkBO6LFuc1rXNkAKSp9hRb3AoGBANPd
+          wOnCsx5aVBdmwXfTyAWOU8tOqOta5HV/kizdXAHRnPunY6HYKe6pa4f3mgcfgm6l
+          O7olk1TwzgOeVR47hPuPll8B3J/LuPILm4tT5UZ+mJzYNau6k5hoEyGiFrmUvFOr
+          YutOMwXyHzONNOJ2Sj0DMp7vFv3Fl7f/SVRbDQmvAoGAX3MCnV/2Quu71RfzSaRk
+          JFg3Xf8k/woy+v/0iGQGktkNzNb73qLoz/YBJbSiKkUfKtOPyS6U9XLK+d9M173k
+          znLm43OfJXOZfoL50jncoMvYZrjm7kItPwzEYwjW050prX+7syWNm603PVReQ5j4
+          yZ3HuuiYf+joNzTfOmvjQZkCgYAFualb58oFWPWKyFkUDuIJ3GXBSbfg3EzuK+tc
+          UQMKfYqbdlOH7Rp8+5EPVI6SALT6nnZ1ukw38GXwzReJwJwAXEn4+Ujn/I5b5Bpo
+          8nRwqj0fh+wzXtBcPvu9Xe71RuKr9CaxKyTP1VIoh3lVYVLyQSLeDqH1a6CE9V4a
+          7Hb2uwKBgQC5tc1KQ9kDZhCSFsumWOe3q6zpEqPU1lQBIUH2RNfhj2vpoOZgSRqU
+          gXfIz6FZckKWnhXVchE4iOG8k+cj74VNHM9DCDV0ULoQOOCE60TpL+P2Kw1uMDMN
+          GZgtqa7HhBpwB4gM2aLP810yCQkEDT67SN8GMJi6rN2oaGDKvukSpw==
+          -----END RSA PRIVATE KEY-----
+        cert: |
+          -----BEGIN CERTIFICATE-----
+          MIIC+TCCAeGgAwIBAgIVAOhF7vDU5dSmLc5X0C6W79SKJhbKMA0GCSqGSIb3DQEB
+          BQUAMDYxCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMRUwEwYDVQQDDAxk
+          aXJlY3Rvcl9zc2wwHhcNMTUwNzIwMTI1NjA5WhcNMTcwNzE5MTI1NjA5WjA2MQsw
+          CQYDVQQGEwJVUzEQMA4GA1UECgwHUGl2b3RhbDEVMBMGA1UEAwwMZGlyZWN0b3Jf
+          c3NsMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsGbLQFYXWZj3a4hb
+          ADKebpR9My/gDeVIY+yuanEKxgbi3+EaN7oEIuzjfv+E69UQDY9+ZKYg2atZdEtW
+          k9bs+M9yqgUxxAHNC6q5d0TdS1xz9b7IUUEPi7RtnitHv02aB/eJFhQIggZ1keb9
+          w428PaOAr5bKUcxlefEXCDhWeGPaTV4rtfdHpy4O0UdsfV5Ha5dq4A/q/4LCDLFO
+          lpUwOPJxH3xQYSXF21+HjxMDeBlUGKxSlpwYm6WqiaRnnG6+lBhFRHqAh0atln8f
+          8M+XK9dtqrZzNGisqF6W2Lxs60SkxYxkrK/D8rSSWzVclcP1gmv/+rIsJScelklt
+          c1Rh2QIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAQBWw+3ZRYZNrLD2JmkLiKA/aUFu
+          HtLD0I4SNuwcs4RIhBgbHwFBfehMWpnuA95HhStZjx593h3SxVVw6XIFH6g6fH83
+          UpEnUcroHlhpF+JnsQY/qDD2m/XymxXmJK1aidQHOBijpZR/nqEmF3S+PPdpLurb
+          jZRB7diiwIm1U3004Abjjsa3KZiksc3dtfR793/+yhNNxV07AZjFvFPSTk1cdqiD
+          8Vs8kldypxWeA8/Dn4sW3J/Fci/aTIS8nb2oUrwOt104RpHGIECVyslWf4jyaiiV
+          nQ5KIY3BnJMyDf54Tq1AZzT1QFulpggENFfaaunN/IZHExRO0Mmr20bD6Vna
+          -----END CERTIFICATE-----
+      max_threads: 4
+      max_upload_size: 15000m
+logging:
+  level: ERROR
