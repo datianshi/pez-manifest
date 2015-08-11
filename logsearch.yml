@@ -1,0 +1,214 @@
+compilation:
+  cloud_properties:
+    cpu: 2
+    ram: 3_840
+    disk: 32_768
+  workers: 3
+  network: default
+  reuse_compilation_vms: true
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+jobs:
+- instances: 1
+  name: api
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.100.11
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_data: true
+    kibana:
+      elasticsearch: 192.168.100.11:9200
+  release: logsearch
+  resource_pool: logsearch_api
+  templates:
+  - name: elasticsearch
+  - name: api
+  - name: kibana
+  update:
+    serial: true
+- instances: 1
+  name: ingestor
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.100.12
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: null
+  release: logsearch
+  resource_pool: logsearch_ingestor
+  templates:
+  - name: ingestor_syslog
+  - name: ingestor_relp
+- instances: 1
+  name: queue
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.100.13
+  persistent_disk: 40960
+  release: logsearch
+  resource_pool: logsearch
+  templates:
+  - name: queue
+- instances: 1
+  name: log_parser
+  networks:
+  - default:
+    - dns
+    - gateway
+    name: default
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true
+  release: logsearch
+  resource_pool: logsearch
+  templates:
+  - name: log_parser
+- instances: 1
+  name: elasticsearch_persistent
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.100.14
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true
+  release: logsearch
+  resource_pool: logsearch_elasticsearch
+  templates:
+  - name: elasticsearch
+  update:
+    serial: true
+- instances: 1
+  name: elasticsearch_autoscale
+  networks:
+  - default:
+    - dns
+    - gateway
+    name: default
+    static_ips:
+    - 192.168.100.15
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true
+  release: logsearch
+  resource_pool: logsearch_elasticsearch
+  templates:
+  - name: elasticsearch
+  update:
+    serial: true
+meta:
+  default_env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  environment: null
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+name: logsearch
+networks:
+- name: default
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.10
+    - 192.168.100.25 - 192.168.100.254
+    static:
+    - 192.168.100.11 - 192.168.100.16
+  type: manual
+properties:
+  api:
+    elasticsearch_host: 192.168.100.11:9200
+  elasticsearch:
+    cluster_name: logsearch
+    discovery:
+      unicast_hosts:
+      - 192.168.100.11
+      - 192.168.100.14
+      - 192.168.100.15
+    exec: null
+    host: 192.168.100.11
+    log_level: DEBUG
+  logstash_ingestor:
+    debug: false
+  logstash_parser:
+    debug: false
+    use_local_elasticsearch: true
+  redis:
+    host: 192.168.100.13
+releases:
+- name: logsearch
+  version: latest
+resource_pools:
+- cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 4096
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: logsearch
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 4096
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: logsearch_api
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 4096
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: logsearch_ingestor
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 4096
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: logsearch_elasticsearch
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-600000
+  max_errors: 1
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 5000-600000
