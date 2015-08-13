@@ -14,7 +14,7 @@ jobs:
   - name: default
     static_ips:
     - 192.168.100.11
-  persistent_disk: 409600
+  persistent_disk: 40960
   properties:
     elasticsearch:
       node:
@@ -77,7 +77,7 @@ jobs:
   - name: default
     static_ips:
     - 192.168.100.14
-  persistent_disk: 409600
+  persistent_disk: 40960
   properties:
     elasticsearch:
       node:
@@ -88,7 +88,7 @@ jobs:
   - name: elasticsearch
   update:
     serial: true
-- instances: 1
+- instances: 0
   name: elasticsearch_autoscale
   networks:
   - default:
@@ -96,8 +96,8 @@ jobs:
     - gateway
     name: default
     static_ips:
-    - 192.168.100.15
-  persistent_disk: 409600
+    # - 192.168.100.15
+  persistent_disk: 40960
   properties:
     elasticsearch:
       node:

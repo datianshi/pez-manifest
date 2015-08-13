@@ -1,0 +1,119 @@
+---
+meta:
+
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+
+networks:
+  - name: cf1
+    type: manual
+    subnets:
+      - range: 192.168.100.0/24
+        gateway: 192.168.100.2
+        dns: [192.168.100.2]
+        reserved:
+          - 192.168.100.1
+          - 192.168.100.3 - 192.168.100.30
+          - 192.168.100.60 - 192.168.100.254
+        static:
+          - 192.168.100.31 - 192.168.100.50
+        cloud_properties: {name: seperate-network}
+
+properties:
+  loggregator_endpoint:
+    shared_secret: secret
+  uaa:
+    scim:
+      users:
+      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin
+      - services|services|scim.write,scim.read,openid,cloud_controller.admin
+    cc:
+      client_secret: secret
+    clients:
+      cloud_controller_username_lookup:
+        secret: secret
+      doppler:
+        secret: secret
+      gorouter:
+        secret: secret
+      login:
+        secret: secret
+      notifications:
+        secret: secret
+    batch:
+      password: admin
+      username: admin
+    admin:
+      client_secret: secret
+
+
+  template_only:
+    aws:
+      access_key_id: fake-id
+      secret_access_key: fake-key
+      availability_zone: fake-zone
+      subnet_ids:
+        cf1: subnet-fake1
+        services1: subnet-fake2
+
+  ccdb: &ccdb
+    db_scheme: postgres
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+
+  ccdb_ng: *ccdb
+
+  uaadb:
+    db_scheme: postgresql
+    port: 5524
+    roles:
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+  loggregator:
+    incoming_port: 3456
+
+  router:
+    status:
+      user: router
+      password: router
+    ssl_skip_validation: true
+
+  etcd_metrics_server:
+    nats:
+      password: nats
+      username: nats
+  nats:
+    password: nats
+    user: nats
+
+  metron_agent:
+    deployment: cloudfoundry
+
+  dea_next:
+    evacuation_bail_out_time_in_seconds: 0
+    memory_mb: 8192
+    disk_mb: 32768
+    disk_overcommit_factor: 3
+    kernel_network_tuning_enabled: false
+
+  domain: 10.65.233.229.xip.io
+  system_domain: 10.65.233.229.xip.io
+  system_domain_organization: system_domain
+  app_domains:
+  - 10.65.233.229.xip.io
