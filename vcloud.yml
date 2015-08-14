@@ -489,7 +489,7 @@ networks:
 properties:
   acceptance_tests: null
   app_domains:
-  - 10.65.233.229.xip.io
+  - 10.65.233.228.xip.io
   app_ssh: null
   cc:
     allow_app_ssh_access: true
@@ -504,7 +504,7 @@ properties:
     broker_client_max_async_poll_duration_minutes: 10080
     broker_client_timeout_seconds: 70
     buildpacks:
-      buildpack_directory_key: 10.65.233.229.xip.io-cc-buildpacks
+      buildpack_directory_key: 10.65.233.228.xip.io-cc-buildpacks
       cdn: null
       fog_connection: null
     bulk_api_password: bulk-password
@@ -544,7 +544,7 @@ properties:
     disable_custom_buildpacks: false
     droplets:
       cdn: null
-      droplet_directory_key: 10.65.233.229.xip.io-cc-droplets
+      droplet_directory_key: 10.65.233.228.xip.io-cc-droplets
       fog_connection: null
     external_host: api
     external_protocol: http
@@ -603,7 +603,7 @@ properties:
         enabled: true
         record_sql: obfuscated
     packages:
-      app_package_directory_key: 10.65.233.229.xip.io-cc-packages
+      app_package_directory_key: 10.65.233.228.xip.io-cc-packages
       cdn: null
       fog_connection: null
       max_package_size: 1073741824
@@ -616,7 +616,7 @@ properties:
     resource_pool:
       cdn: null
       fog_connection: null
-      resource_directory_key: 10.65.233.229.xip.io-cc-resources
+      resource_directory_key: 10.65.233.228.xip.io-cc-resources
     security_group_definitions:
     - name: public_networks
       rules:
@@ -638,7 +638,7 @@ properties:
       - destination: 0.0.0.0/0
         ports: "53"
         protocol: udp
-    srv_api_uri: https://api.10.65.233.229.xip.io
+    srv_api_uri: https://api.10.65.233.228.xip.io
     stacks: null
     staging_upload_password: upload-password
     staging_upload_user: upload-user
@@ -728,7 +728,7 @@ properties:
     staging_memory_limit_mb: 1024
   description: Cloud Foundry sponsored by Pivotal
   disk_quota_enabled: true
-  domain: 10.65.233.229.xip.io
+  domain: 10.65.233.228.xip.io
   doppler:
     blacklisted_syslog_ranges: null
     debug: false
@@ -749,7 +749,7 @@ properties:
       password: nats
       username: nats
   hm9000:
-    url: https://hm9000.10.65.233.229.xip.io
+    url: https://hm9000.10.65.233.228.xip.io
   logger_endpoint: null
   loggregator:
     blacklisted_syslog_ranges: null
@@ -767,10 +767,10 @@ properties:
     enabled: true
     invitations_enabled: null
     links:
-      home: https://console.10.65.233.229.xip.io
+      home: https://console.10.65.233.228.xip.io
       network: null
-      passwd: https://console.10.65.233.229.xip.io/password_resets/new
-      signup: https://console.10.65.233.229.xip.io/register
+      passwd: https://console.10.65.233.228.xip.io/password_resets/new
+      signup: https://console.10.65.233.228.xip.io/register
       signup-network: null
     logout: null
     messages: null
@@ -828,7 +828,7 @@ properties:
     skip_cert_verify: true
   support_address: http://support.cloudfoundry.com
   syslog_daemon_config: null
-  system_domain: 10.65.233.229.xip.io
+  system_domain: 10.65.233.228.xip.io
   system_domain_organization: system_domain
   uaa:
     admin:
@@ -862,7 +862,7 @@ properties:
         authorities: oauth.login,scim.write,clients.read,notifications.write,critical_notifications.write,emails.write,scim.userids,password.write
         authorized-grant-types: authorization_code,client_credentials,refresh_token
         override: true
-        redirect-uri: http://login.10.65.233.229.xip.io
+        redirect-uri: http://login.10.65.233.228.xip.io
         scope: openid,oauth.approvals
         secret: secret
       notifications:
@@ -870,7 +870,7 @@ properties:
         authorized-grant-types: client_credentials
         secret: secret
     database: null
-    issuer: https://uaa.10.65.233.229.xip.io
+    issuer: https://uaa.10.65.233.228.xip.io
     jwt:
       signing_key: |+
         -----BEGIN RSA PRIVATE KEY-----
@@ -907,7 +907,7 @@ properties:
       - admin|admin|scim.write,scim.read,openid,cloud_controller.admin
       - services|services|scim.write,scim.read,openid,cloud_controller.admin
     spring_profiles: null
-    url: https://uaa.10.65.233.229.xip.io
+    url: https://uaa.10.65.233.228.xip.io
     user: null
     zones: null
   uaadb:

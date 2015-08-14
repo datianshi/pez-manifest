@@ -56,6 +56,17 @@ jobs:
   resource_pool: logsearch
   templates:
   - name: queue
+- name: ingestor_cloudfoundry
+  release: logsearch-for-cloudfoundry
+  templates:
+  - name: ingestor_cloudfoundry-firehose
+  instances: 1
+  resource_pool: logsearch
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.100.17
+  persistent_disk: 0
 - instances: 1
   name: log_parser
   networks:
@@ -131,9 +142,17 @@ networks:
     - 192.168.100.3 - 192.168.100.10
     - 192.168.100.25 - 192.168.100.254
     static:
-    - 192.168.100.11 - 192.168.100.16
+    - 192.168.100.11 - 192.168.100.17
   type: manual
 properties:
+  cloudfoundry:
+    skip_ssl_validation: true
+    system_domain: 10.65.233.228.xip.io
+    admin_username: admin
+    admin_password: admin
+    admin_client_secret: secret
+    firehose_user: admin
+    firehose_password: admin
   api:
     elasticsearch_host: 192.168.100.11:9200
   elasticsearch:
@@ -155,6 +174,8 @@ properties:
     host: 192.168.100.13
 releases:
 - name: logsearch
+  version: latest
+- name: logsearch-for-cloudfoundry
   version: latest
 resource_pools:
 - cloud_properties:
