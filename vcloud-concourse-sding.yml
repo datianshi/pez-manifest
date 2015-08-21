@@ -61,7 +61,7 @@ jobs:
       atc:
         publicly_viewable: true
         basic_auth_username: atc
-        basic_auth_encrypted_password: atc
+        basic_auth_password: atc
         postgresql:
           database: atc
           role: 
