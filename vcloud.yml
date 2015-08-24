@@ -517,7 +517,7 @@ properties:
     - name: staticfile_buildpack
       package: buildpack_staticfile
     - name: java_buildpack
-      package: buildpack_java
+      package: buildpack_java_offline
     - name: ruby_buildpack
       package: buildpack_ruby
     - name: nodejs_buildpack
@@ -551,8 +551,8 @@ properties:
     install_buildpacks:
     - name: staticfile_buildpack
       package: buildpack_staticfile
-    - name: java_buildpack
-      package: buildpack_java
+    - name: java_buildpack_offline
+      package: buildpack_java_offline
     - name: ruby_buildpack
       package: buildpack_ruby
     - name: nodejs_buildpack
@@ -645,8 +645,8 @@ properties:
     system_buildpacks:
     - name: staticfile_buildpack
       package: buildpack_staticfile
-    - name: java_buildpack
-      package: buildpack_java
+    - name: java_buildpack_offline
+      package: buildpack_java_offline
     - name: ruby_buildpack
       package: buildpack_ruby
     - name: nodejs_buildpack
