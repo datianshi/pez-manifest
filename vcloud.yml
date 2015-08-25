@@ -333,7 +333,7 @@ jobs:
   - name: metron_agent
     release: cf
   update: {}
-- instances: 1
+- instances: 4
   name: runner_z1
   networks:
   - name: cf1

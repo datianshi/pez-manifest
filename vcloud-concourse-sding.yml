@@ -20,7 +20,7 @@ networks:
       - range: 192.168.100.0/24
         gateway: 192.168.100.2
         dns: [192.168.100.2]
-        reserved: 
+        reserved:
           - 192.168.100.1
           - 192.168.100.3
           - 192.168.100.10 - 192.168.100.254
@@ -64,7 +64,7 @@ jobs:
         basic_auth_password: atc
         postgresql:
           database: atc
-          role: 
+          role:
             name: atc
             password: atc
 
@@ -88,7 +88,7 @@ jobs:
     properties:
       postgresql:
         databases: [{name: atc}]
-        roles: 
+        roles:
         - name: atc
           password: atc
 
@@ -97,7 +97,7 @@ jobs:
           servers: {lan: [192.168.100.4]}
 
   - name: worker
-    instances: 1
+    instances: 2
     resource_pool: workers
     templates:
       - {release: concourse, name: consul-agent}
