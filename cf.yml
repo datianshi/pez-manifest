@@ -8,12 +8,13 @@ compilation:
   workers: 3
 director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
 jobs:
-- instances: 0
+- instances: 1
   name: consul_z1
   networks:
   - name: cf1
-    static_ips: []
-  persistent_disk: 1024
+    static_ips:
+    - 192.168.100.35
+  persistent_disk: 10240
   properties:
     consul:
       agent:
@@ -28,7 +29,7 @@ jobs:
     release: cf
   update:
     max_in_flight: 1
-    serial: true
+    serial: true  
 - default_networks:
   - name: cf1
     static_ips: null
@@ -333,7 +334,7 @@ jobs:
   - name: metron_agent
     release: cf
   update: {}
-- instances: 4
+- instances: 2
   name: runner_z1
   networks:
   - name: cf1
@@ -490,7 +491,8 @@ properties:
   acceptance_tests: null
   app_domains:
   - 10.65.233.228.xip.io
-  app_ssh: null
+  app_ssh:
+    host_key_fingerprint: a6:d1:08:0b:b0:cb:9b:5f:c4:ba:44:2a:97:26:19:8a
   cc:
     allow_app_ssh_access: true
     allowed_cors_domains: []
@@ -639,7 +641,11 @@ properties:
         ports: "53"
         protocol: udp
     srv_api_uri: https://api.10.65.233.228.xip.io
-    stacks: null
+    stacks:
+      - name: "cflinuxfs2"
+        description: "Cloud Foundry Linux-based filesystem"
+      - name: "windows2012R2"
+        description: "Windows Server 2012 R2"
     staging_upload_password: upload-password
     staging_upload_user: upload-user
     system_buildpacks:
@@ -687,7 +693,7 @@ properties:
     agent:
       log_level: null
       servers:
-        lan: []
+        lan: [192.168.100.35]
   databases:
     address: 192.168.100.43
     databases:

@@ -72,6 +72,34 @@ jobs:
         atc:
           username: atc
           password: atc
+        host_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIIEowIBAAKCAQEAroMSnnJi4gYL64a7hargYW2VCxRj2F5Z/tPhQjCkobG2vE/8
+          RRFtVxw0uO5k5b0cDnlRaFfQBGAL860pvjll8JAihSIFgYYhjnRmIljUBbAUYCTP
+          m/kNDSidBQKrB6RRoji1FZOvIiR+NA5RdUuCJCXyNEBQYWfsdcOb9g01rKMh+D5Q
+          sSaM8zsQk7rLy8iWkPJgOQF3IP8/7NJpN91fLEzB6Pp/Ts2UKzEGAPoBOwppCXXe
+          F/+Eqwz+BZDOCtM0ZVjR6zq7vcBQtgQLrYjDe+pOYjrn7UNERsMDleYXx4hHzkiy
+          3iY2iLZwWCldNXvdv/oSfXqIOIIWrnOs+0GgZQIDAQABAoIBAH4aLtEZ/QQwtFpc
+          QJMlWABvC/02nbOS8lsmxiZrOfuxjEdlUPij0CvbMOnVMkmkrmpzFfVdRu5ybRCH
+          N5vCpDwCGz+yxuHCh+sFh2wYXhVCGGclEnQ1sk2o5FXjiKz7+xVK/ud5kVsNnbiG
+          BCzLBF6UoQFK3AqW6xJp6AATqY52HVBDtFZwXsfZL/rp+q7aYGoDlFCW8+wxtExE
+          4DOSBqDsEKg/jQ/eF/M9RAzyOB5Pgln8rI5NJEMDe4FoLwk2wn37nT5Fd2LkyPnV
+          5RJoSrWmz3Y+P1y9frdVFDNpxGMAJ7NUTFVbugXan8niDoxiyoh1nXbQbrCR/EXv
+          I0/v+4ECgYEA3lyDE71R0ITwbudL2BNmg2b+C868lVzTTzetscGpjwRmN/vY6iq/
+          acV/BljDhJoJn+M4hTiJ1P4DLd7bEk8mhGvqzKK+/cytTzLx34i6oHzalzXRWrYw
+          TRUAN3+FxlukxIYzFbwqYRGKHznMhz6ePSfHf8CISg8sSLzXpJgoZGECgYEAyOl6
+          DWW3KPdcHrwosLeHVzQ0KLbRg9taf0+1gzDukd8BdM3pb9Kciw49bXO7fVAFheNs
+          qSX8F3nsR1fYK8PcJsW+rbdO5G8f4hL/7bSr/OsmMomrHrzpDWhT4RNEouSJY8pc
+          6t0liB9SIGj6oJMjfz6/coihRzizN3WB7VS3uoUCgYEA3U9AGkZkBmA5mHfWMbFl
+          Z0T7di8F3LatjXuCAZgZNUGQpwme47k2F4S8H0n7Fp/lEmAo4dbav8UsztuuODPU
+          xxlNcOxNoPa0S04OE4fXD2IUgUjMHDeWLTHIrHPcZgbSH9LdRzWnDENTsC5rlPPK
+          tF1CHrE2NFeToLVq/uN92CECgYBt/24kcaEDG9LivO+mOQUvWFSKSfWRtIHqnBBr
+          wFmNocPhWG9LGss8UtKM30UySaKMeERgo3xOuiEDunOPGo+o5rEL2QWnibOyCeb3
+          FOjo8zGZj8gRbypFfe4Wl38HlAooiX2v1N4cldFYD0HQsl5H52nX4jgyjzeH0J0O
+          /EgPJQKBgBBWeBJT3ZtuXNTACvDxgj11B7HnviNuCixivy6ux2ZusVlrWlqEwt2b
+          FTVBuID+bmYcSl07gpUZSNy9cQT16EQuhyXFyrN21GcS7w5AN2Kz2i8N/ZDy8u5z
+          6xZShMkQhUNlZxE6Rx73R4Z8+RRy2Vgkz2ningMaDVVMISdgKtQt
+          -----END RSA PRIVATE KEY-----
 
       consul:
         agent:
@@ -159,6 +187,11 @@ resource_pools:
       cpu: 2
       ram: 7_680
       disk: 32_768
+
+properties:
+  groundcrew:
+    tsa:
+      host_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCugxKecmLiBgvrhruFquBhbZULFGPYXln+0+FCMKShsba8T/xFEW1XHDS47mTlvRwOeVFoV9AEYAvzrSm+OWXwkCKFIgWBhiGOdGYiWNQFsBRgJM+b+Q0NKJ0FAqsHpFGiOLUVk68iJH40DlF1S4IkJfI0QFBhZ+x1w5v2DTWsoyH4PlCxJozzOxCTusvLyJaQ8mA5AXcg/z/s0mk33V8sTMHo+n9OzZQrMQYA+gE7CmkJdd4X/4SrDP4FkM4K0zRlWNHrOru9wFC2BAutiMN76k5iOuftQ0RGwwOV5hfHiEfOSLLeJjaItnBYKV01e92/+hJ9eog4ghauc6z7QaBl sding@Shaozhen-Ding-MacBook-Pro.local"
 
 compilation:
   workers: 3
