@@ -718,7 +718,7 @@ properties:
         api_url: http://bbs.service.consul:8888
       cors_enabled: null
       domain_names:
-      - receptor.10.244.0.34.xip.io
+      - receptor.10.65.233.228.xip.io
       etcd:
         ca_cert: |+
           -----BEGIN CERTIFICATE-----

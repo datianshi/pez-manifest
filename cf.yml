@@ -29,7 +29,7 @@ jobs:
     release: cf
   update:
     max_in_flight: 1
-    serial: true  
+    serial: true
 - default_networks:
   - name: cf1
     static_ips: null
@@ -833,7 +833,10 @@ properties:
   ssl:
     skip_cert_verify: true
   support_address: http://support.cloudfoundry.com
-  syslog_daemon_config: null
+  syslog_daemon_config:
+    address: logs3.papertrailapp.com
+    port: 12700
+    transport: tcp
   system_domain: 10.65.233.228.xip.io
   system_domain_organization: system_domain
   uaa:
