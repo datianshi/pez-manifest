@@ -1,0 +1,110 @@
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+
+networks:
+  - name: mysql1
+    type: manual
+    subnets:
+      - range: 192.168.100.0/24
+        gateway: 192.168.100.2
+        dns: [192.168.100.2]
+        reserved:
+          - 192.168.100.1
+          - 192.168.100.3 - 192.168.100.155
+          - 192.168.100.170 - 192.168.100.254
+        static:
+          - 192.168.100.156 - 192.168.100.158
+        cloud_properties: {name: seperate-network}
+
+# networks:
+# - name: mysql1
+#   subnets:
+#   - range: 10.0.0.0/24
+#     gateway: 10.0.0.1
+#     reserved:
+#     - 10.0.0.2-10.0.0.109
+#     - 10.0.0.130-10.0.0.254
+#     static:
+#     - 10.0.0.120
+#     - 10.0.0.121
+#     - 10.0.0.122
+#     - 10.0.0.123
+#     - 10.0.0.124
+#     dns:
+#     - 10.0.0.3
+#     - 8.8.8.8
+#     cloud_properties:
+#       name: YOUR_SUBNET_NAME #This should match your vSphere network name, e.g. "VM Network".
+# - name: mysql2
+#   subnets:
+#   - range: 10.0.1.0/24
+#     gateway: 10.0.1.1
+#     reserved:
+#     - 10.0.1.2-10.0.1.109
+#     - 10.0.1.130-10.0.1.254
+#     static:
+#     - 10.0.1.120
+#     - 10.0.1.121
+#     - 10.0.1.122
+#     - 10.0.1.123
+#     - 10.0.1.124
+#     dns:
+#     - 10.0.1.3
+#     - 8.8.8.8
+#     cloud_properties:
+#       name: YOUR_SUBNET_NAME_2 #This should match your vSphere network name, e.g. "VM Network 2".
+# - name: mysql3
+#   subnets:
+#   - range: 10.0.2.0/24
+#     gateway: 10.0.2.1
+#     reserved:
+#     - 10.0.2.2-10.0.2.109
+#     - 10.0.2.130-10.0.2.254
+#     static:
+#     - 10.0.2.120
+#     - 10.0.2.121
+#     - 10.0.2.122
+#     - 10.0.2.123
+#     - 10.0.2.124
+#     dns:
+#     - 10.0.2.3
+#     - 8.8.8.8
+#     cloud_properties:
+#       name: YOUR_SUBNET_NAME_3 #This should match your vSphere network name, e.g. "VM Network 3".
+
+properties:
+  cf:
+    admin_username: admin
+    admin_password: admin
+    skip_ssl_validation: true
+  domain:  10.65.233.228.xip.io # The broker registers a route at p-mysql.external_domain
+  app_domains:
+  - 10.65.233.228.xip.io
+  nats:
+    machines:
+      - 192.168.100.32
+    password: nats
+    user: nats
+    port: 4222
+
+meta:
+  environment: YOUR_ENVIRONMENT_NAME
+
+jobs:
+- name: proxy_z1
+  properties:
+    proxy:
+      api_username: mysql # Used for basic auth in front of proxy api
+      api_password: mysql
+- name: mysql_z1
+  properties:
+    admin_password: admin #The admin password for the MySQL server process
+- name: cf-mysql-broker_z1
+  properties:
+    # The username & password cloud controller will use to authenticate with the service broker.
+    auth_username: admin #eg. cc
+    auth_password: admin
+    cookie_secret: admin
+    services:
+    - name: p-mysql
+      dashboard_client:
+        secret: secret #Secret used by MySQL dashboard to fetch an OAuth token from UAA

@@ -1,0 +1,181 @@
+compilation:
+  cloud_properties:
+    cpu: 2
+    disk: 8192
+    ram: 2048
+  network: services1
+  reuse_compilation_vms: true
+  workers: 3
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+jobs:
+- instances: 1
+  name: rmq
+  networks:
+  - name: services1
+    static_ips:
+    - 192.168.100.141
+  persistent_disk: 2048
+  release: cf-rabbitmq
+  resource_pool: services-small
+  template: rabbitmq-server
+- instances: 1
+  name: rmq-broker
+  networks:
+  - name: services1
+    static_ips:
+    - 192.168.100.142
+  release: cf-rabbitmq
+  resource_pool: services-small
+  template: rabbitmq-broker
+- instances: 1
+  name: haproxy
+  networks:
+  - name: services1
+    static_ips:
+    - 192.168.100.143
+  release: cf-rabbitmq
+  resource_pool: services-small
+  template: rabbitmq-haproxy
+- instances: 1
+  lifecycle: errand
+  name: broker-registrar
+  networks:
+  - name: services1
+  properties:
+    broker:
+      host: 192.168.100.142
+      name: p-rabbitmq
+      password: p1-rabbit-default-password
+      port: 4567
+      protocol: http
+      username: p1-rabbit
+  release: cf-rabbitmq
+  resource_pool: services-small
+  template: broker-registrar
+- instances: 1
+  lifecycle: errand
+  name: broker-deregistrar
+  networks:
+  - name: services1
+  properties:
+    broker:
+      host: 192.168.100.142
+      name: p-rabbitmq
+      password: p1-rabbit-default-password
+      port: 4567
+      protocol: http
+      username: p1-rabbit
+  release: cf-rabbitmq
+  resource_pool: services-small
+  template: broker-deregistrar
+name: cf-rabbitmq
+networks:
+- name: services1
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.140
+    - 192.168.100.155 - 192.168.100.254
+    static:
+    - 192.168.100.141 - 192.168.100.145
+  type: manual
+properties:
+  cf:
+    admin_password: admin
+    admin_username: admin
+    api_url: http://api.10.65.233.228.xip.io
+    domain: 10.65.233.228.xip.io
+    nats:
+      host: 192.168.100.32
+      password: nats
+      port: "4222"
+      username: nats
+  rabbitmq-broker:
+    cc_endpoint: http://api.10.65.233.228.xip.io
+    logging:
+      level: debug
+      print_stack_traces: false
+    rabbitmq:
+      administrator:
+        password: c1oudc0w
+        username: admin
+      hosts:
+      - 192.168.100.143
+      management_domain: pivotal-rabbitmq.your_cc_endpoint.com
+      mirrored_queues:
+        enabled: true
+        policy_name: mirrored_queues
+      ssl: |+
+        -----BEGIN CERTIFICATE-----
+        ****** KEY GOES HERE **********
+        -----END CERTIFICATE-----
+    service:
+      password: p1-rabbit-default-password
+      url: http://(( static_ips(1) )):4567
+      username: p1-rabbit
+    uaa_client:
+      client_id: cf
+      password: your-uaa-password
+      username: admin
+  rabbitmq-haproxy:
+    ports:
+    - 5672
+    - 5671
+    - 1883
+    - 8883
+    - 61613
+    - 61614
+    - 15672
+    - 15674
+    server_ips:
+    - 192.168.100.141
+    stats:
+      password: c1oudc0w
+      username: admin
+  rabbitmq-server:
+    administrators:
+      broker:
+        password: c1oudc0w
+        username: admin
+    plugins:
+    - rabbitmq_management
+    - rabbitmq_mqtt
+    - rabbitmq_stomp
+    ssl:
+      cacert: |+
+        -----BEGIN CERTIFICATE-----
+        -----END CERTIFICATE-----
+      cert: |+
+        -----BEGIN CERTIFICATE-----
+        -----END CERTIFICATE-----
+      key: |+
+        -----BEGIN RSA PRIVATE KEY-----
+        -----END RSA PRIVATE KEY-----
+    static_ips:
+    - 192.168.100.141
+  route-registrar:
+    target_ip: 192.168.100.143
+releases:
+- name: cf-rabbitmq
+  version: latest
+resource_pools:
+- cloud_properties:
+    cpu: 1
+    disk: 10240
+    ram: 2048
+  name: services-small
+  network: services1
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-600000
+  max_in_flight: 4
+  update_watch_time: 30000-600000
