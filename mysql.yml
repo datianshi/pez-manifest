@@ -23,15 +23,13 @@ jobs:
     admin_password: admin
     cluster_ips:
     - 192.168.100.156
-    - null
-    - null
-    max_heap_table_size: null
+    # max_heap_table_size: null
     network_name: mysql1
-    seeded_databases: null
-    syslog_aggregator: null
-    tmp_table_size: null
-    wsrep_max_ws_rows: null
-    wsrep_max_ws_size: null
+    # seeded_databases: null
+    # syslog_aggregator: null
+    # tmp_table_size: null
+    # wsrep_max_ws_rows: null
+    # wsrep_max_ws_size: null
   release: cf-mysql
   resource_pool: mysql_z1
   template: mysql
@@ -44,8 +42,6 @@ jobs:
   properties:
     cluster_ips:
     - 192.168.100.156
-    - null
-    - null
     external_host: p-mysql.10.65.233.228.xip.io
     nats:
       machines:
@@ -55,10 +51,10 @@ jobs:
       user: nats
     network_name: mysql1
     proxy:
-      api_force_https: null
+      api_force_https: false
       api_password: mysql
       api_username: mysql
-      health_port: null
+      health_port: 1936
     syslog_aggregator: null
   release: cf-mysql
   resource_pool: proxy_z1
@@ -245,8 +241,6 @@ properties:
     skip_ssl_validation: true
   default_mysql_cluster_ips:
   - 192.168.100.156
-  - null
-  - null
   domain: 10.65.233.228.xip.io
   nats:
     machines:
@@ -299,4 +293,3 @@ update:
   canary_watch_time: 30000-600000
   max_in_flight: 1
   update_watch_time: 30000-600000
-

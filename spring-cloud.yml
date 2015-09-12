@@ -1,0 +1,149 @@
+meta:
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+
+name: spring-cloud-broker
+
+releases:
+- name: spring-cloud
+  version: latest
+
+networks:
+- name: spring-cloud-broker-network
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.170
+    - 192.168.100.175 - 192.168.100.254
+    static: []
+  type: manual
+
+compilation:
+  cloud_properties:
+    cpu: "2"
+    disk: "20480"
+    ram: "2048"
+  network: spring-cloud-broker-network
+  reuse_compilation_vms: true
+  workers: 4
+
+update:
+  canaries: 1
+  canary_watch_time: 1000-900000
+  max_in_flight: 3
+  update_watch_time: 1000-900000
+
+jobs:
+- instances: 1
+  lifecycle: errand
+  name: deploy-service-broker
+  release: spring-cloud
+  networks:
+  - name: spring-cloud-broker-network
+  resource_pool: spring-cloud-broker-resource-pool
+  templates:
+  - name: deploy-service-broker
+- instances: 1
+  lifecycle: errand
+  name: register-service-broker
+  release: spring-cloud
+  networks:
+  - name: spring-cloud-broker-network
+  resource_pool: spring-cloud-broker-resource-pool
+  templates:
+  - name: register-service-broker
+- instances: 1
+  lifecycle: errand
+  name: destroy-service-broker
+  release: spring-cloud
+  networks:
+  - name: spring-cloud-broker-network
+  resource_pool: spring-cloud-broker-resource-pool
+  templates:
+  - name: destroy-service-broker
+
+resource_pools:
+- cloud_properties:
+    cpu: "2"
+    disk: "10480"
+    ram: "2048"
+  name: spring-cloud-broker-resource-pool
+  network: spring-cloud-broker-network
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+# The following `apps` entry needs to match the given network name to arrive at the ip for the ctl.erb file within the job templates
+# Used in the following manner
+# Adding artificial space between < and % so bosh deployment will barf with erb errors abt missing end
+# export my_ip='< %=spec.networks.send(properties.networks.keys.first).ip %>'
+#
+# < % if properties.coherence.jvm_args %>
+#   export JVM_ARGS='< %=properties.coherence.jvm_args %>  -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps'
+# < % end %>
+#
+# <  % if properties.coherence.cluster %>
+#
+#   < % if properties.coherence.cluster.name %>
+#     export cluster_name='< %= properties.coherence.cluster.name %>'
+#     export COHERENCE_CLUSTER_ARGS="$COHERENCE_CLUSTER_ARGS -Dtangosol.coherence.cluster=$cluster_name"
+#   < % end %>
+#
+#   < % if properties.coherence.listener %>
+#     port='< %= properties.coherence.listener.port %>'
+#
+#     < % if properties.coherence.machines %>
+#       echo Machine Ips : < %=  p("coherence.machines") %>
+#  networks:
+#    apps: "spring-cloud-broker-network"
+properties:
+  domain: 10.65.233.228.xip.io
+  app_domains: 10.65.233.228.xip.io
+  create_open_security_group: true
+  uaa:
+    clients:
+      spring_cloud_broker:
+        secret: 'test'
+  ssl:
+    skip_cert_verify: true
+  spring_cloud_broker:
+    encryption_key: 'test'
+    product_name: p-spring-cloud-services
+    app_name: spring-cloud-broker
+    app_uri: spring-cloud-broker
+    instances:
+      org_name: p-spring-cloud-services
+      space_name: instances
+      instances_user: instances
+      instances_password: instances
+    app_push:
+      memory: 512
+      timeout: 180
+    persistence_store_type: mysql
+    message_bus_type: rabbitmq
+    cf:
+      admin_user: admin
+      admin_password: admin
+    uaa:
+      admin_client_id: admin
+      admin_client_secret: secret
+    broker:
+      user: admin
+      password: admin
+      plan_names: "p-service-registry,p-config-server,p-circuit-breaker-dashboard"
+      org_name: p-spring-cloud-services
+      space_name: broker
+    worker:
+      client_id: p-spring-cloud-services-worker
+      client_secret: secret
+      user: admin
+      password: admin
+    broker_dashboard_secret: test
