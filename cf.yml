@@ -878,6 +878,11 @@ properties:
         authorities: cloud_controller.admin,scim.read
         authorized-grant-types: client_credentials
         secret: secret
+      cc-service-dashboards:
+        secret: cc-broker-secret
+        scope: openid,cloud_controller_service_permissions.read
+        authorities: clients.read,clients.write,clients.admin
+        authorized-grant-types: client_credentials
     database: null
     issuer: https://uaa.10.65.233.228.xip.io
     jwt:
