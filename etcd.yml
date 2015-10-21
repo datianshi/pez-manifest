@@ -1,0 +1,126 @@
+compilation:
+  cloud_properties:
+    cpu: 1
+    disk: 4096
+    ram: 2048
+  network: compilation
+  reuse_compilation_vms: true
+  workers: 3
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+jobs:
+- instances: 1
+  name: etcd_z1
+  networks:
+  - name: etcd1
+    static_ips:
+    - 192.168.100.191
+  persistent_disk: 1024
+  resource_pool: etcd_z1
+  templates:
+  - name: etcd
+    release: etcd
+  - name: etcd_metrics_server
+    release: etcd
+- instances: 0
+  name: etcd_z2
+  networks:
+  - name: etcd2
+    static_ips: []
+  persistent_disk: 1024
+  resource_pool: etcd_z2
+  templates:
+  - name: etcd
+    release: etcd
+  - name: etcd_metrics_server
+    release: etcd
+name: etcd
+networks:
+- name: etcd1
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.190
+    - 192.168.100.200 - 192.168.100.254
+    static:
+    - 192.168.100.191 - 192.168.100.198
+  type: manual
+- name: etcd2
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.190
+    - 192.168.100.200 - 192.168.100.254
+    static:
+    - 192.168.100.191 - 192.168.100.198
+  type: manual
+- name: compilation
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.190
+    - 192.168.100.200 - 192.168.100.254
+  type: manual
+properties:
+  etcd:
+    ca_cert: null
+    client_cert: null
+    client_key: null
+    heartbeat_interval_in_milliseconds: null
+    machines:
+    - 192.168.100.191
+    peer_ca_cert: null
+    peer_cert: null
+    peer_key: null
+    peer_require_ssl: false
+    require_ssl: false
+    server_cert: null
+    server_key: null
+  etcd_metrics_server:
+    nats:
+      machines:
+      - 192.168.100.32
+      password: nats
+      username: nats
+releases:
+- name: etcd
+  version: latest
+resource_pools:
+- cloud_properties:
+    cpu: 2
+    disk: 20480
+    ram: 3096
+  name: etcd_z1
+  network: etcd1
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: 3104
+- cloud_properties: {}
+  name: etcd_z2
+  network: etcd2
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: 3104
+update:
+  canaries: 1
+  canary_watch_time: 1000-180000
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 1000-180000

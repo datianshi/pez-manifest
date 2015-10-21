@@ -16,7 +16,7 @@ iaas_settings:
         - 192.168.100.3 - 192.168.100.100
         - 192.168.100.140 - 192.168.100.254
         static:
-        - 192.168.100.101 - 192.168.100.120
+        - 192.168.100.101 - 192.168.100.121
       type: manual
     - name: diego2
       type: manual
@@ -314,4 +314,13 @@ iaas_settings:
     - name: route_emitter_z2
       cloud_properties: {}
     - name: route_emitter_z3
+      cloud_properties: {}
+    - name: colocated_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: colocated_z2
+      cloud_properties: {}
+    - name: colocated_z3
       cloud_properties: {}

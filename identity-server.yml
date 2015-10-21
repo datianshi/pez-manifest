@@ -1,0 +1,92 @@
+compilation:
+  cloud_properties:
+    cpu: "2"
+    disk: "20480"
+    ram: "2048"
+  network: identity_service_broker_network
+  reuse_compilation_vms: true
+  workers: 2
+director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
+jobs:
+- instances: 1
+  lifecycle: errand
+  name: deploy-service-broker
+  networks:
+  - name: identity_service_broker_network
+  resource_pool: small_z1
+  templates:
+  - name: deploy-service-broker
+- instances: 1
+  lifecycle: errand
+  name: destroy-broker
+  networks:
+  - name: identity_service_broker_network
+  resource_pool: small_z1
+  templates:
+  - name: destroy-broker
+meta:
+  environment: identity_service_broker
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+name: identity_service_broker
+networks:
+- name: identity_service_broker_network
+  subnets:
+  - cloud_properties:
+      name: seperate-network
+    dns:
+    - 192.168.100.2
+    gateway: 192.168.100.2
+    range: 192.168.100.0/24
+    reserved:
+    - 192.168.100.1
+    - 192.168.100.3 - 192.168.100.170
+    - 192.168.100.175 - 192.168.100.254
+    static: []
+  type: manual
+properties:
+  app_domains: 10.65.233.228.xip.io
+  domain: 10.65.233.228.xip.io
+  identity_service_broker:
+    app_name: identity-service-broker
+    app_push:
+      memory: 512
+      org_quota: 1024
+      timeout: 180
+    app_uri: identity-service-broker
+    broker:
+      internal_plan_names: p-identity
+      password: testuser
+      user: testuser
+    cf:
+      admin_password: admin
+      admin_user: admin
+    create_open_security_group: false
+    encryption_key: test
+    persistence_store_type: none
+  ssl:
+    skip_cert_verify: true
+  uaa:
+    clients:
+      identity:
+        secret: identity
+    url: https://uaa.10.65.233.228.xip.io
+releases:
+- name: identity-server
+  version: latest
+resource_pools:
+- cloud_properties:
+    cpu: "2"
+    disk: "10480"
+    ram: "2048"
+  name: small_z1
+  network: identity_service_broker_network
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+update:
+  canaries: 1
+  canary_watch_time: 1000-100000
+  max_in_flight: 50
+  update_watch_time: 1000-100000

@@ -1,0 +1,45 @@
+iaas_settings:
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+  compilation_cloud_properties: {}
+  resource_pool_cloud_properties:
+    - name: etcd_z1
+      cloud_properties: {}
+    - name: etcd_z2
+      cloud_properties: {}
+  subnet_configs:
+    - name: etcd1
+      subnets:
+      - range: 192.168.100.0/24
+        gateway: 192.168.100.2
+        dns: [192.168.100.2]
+        reserved:
+          - 192.168.100.1
+          - 192.168.100.3 - 192.168.100.190
+          - 192.168.100.200 - 192.168.100.254
+        static:
+          - 192.168.100.191 - 192.168.100.198
+        cloud_properties: {name: seperate-network}
+    - name: etcd2
+      subnets:
+      - range: 192.168.100.0/24
+        gateway: 192.168.100.2
+        dns: [192.168.100.2]
+        reserved:
+          - 192.168.100.1
+          - 192.168.100.3 - 192.168.100.190
+          - 192.168.100.200 - 192.168.100.254
+        static:
+          - 192.168.100.191 - 192.168.100.198
+        cloud_properties: {name: seperate-network}
+    - name: compilation
+      subnets:
+      - range: 192.168.100.0/24
+        gateway: 192.168.100.2
+        dns: [192.168.100.2]
+        reserved:
+          - 192.168.100.1
+          - 192.168.100.3 - 192.168.100.190
+          - 192.168.100.200 - 192.168.100.254
+        cloud_properties: {name: seperate-network}

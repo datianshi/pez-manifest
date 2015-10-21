@@ -8,14 +8,13 @@ compilation:
   workers: 4
 director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
 jobs:
-- instances: 3
+- instances: 2
   name: riak-cs
   networks:
   - name: riak-cs1
     static_ips:
-    - 192.168.100.142
-    - 192.168.100.143
-    - 192.168.100.144
+    - 192.168.100.172
+    - 192.168.100.173
   persistent_disk: 10240
   properties:
     external_riakcs_host: p-riakcs.10.65.233.228.xip.io
@@ -28,24 +27,22 @@ jobs:
     riak:
       firewall_enabled: true
       ips:
-      - 192.168.100.142
-      - 192.168.100.143
-      - 192.168.100.144
+      - 192.168.100.172
+      - 192.168.100.173
       network: riak-cs1
-      seed_node: 192.168.100.142
+      seed_node: 192.168.100.172
     riak_cs:
       admin_key: admin
       admin_secret: admin
       ips:
-      - 192.168.100.142
-      - 192.168.100.143
-      - 192.168.100.144
+      - 192.168.100.172
+      - 192.168.100.173
       port: null
       register_route: null
       seeded_buckets: null
       ssl_enabled: null
     stanchion:
-      ip: 192.168.100.141
+      ip: 192.168.100.171
     syslog_aggregator: null
   resource_pool: riak-pool
   template: riak-cs
@@ -54,17 +51,17 @@ jobs:
   networks:
   - name: riak-cs1
     static_ips:
-    - 192.168.100.141
+    - 192.168.100.171
   persistent_disk: 4096
   properties:
     riak:
-      seed_node: 192.168.100.142
+      seed_node: 192.168.100.172
     riak_cs:
       admin_key: admin
       admin_secret: admin
   resource_pool: riak-pool
   template: stanchion
-- instances: 1
+- instances: 0
   name: cf-riak-cs-broker
   networks:
   - name: riak-cs1
@@ -143,7 +140,7 @@ jobs:
       api_url: https://api.10.65.233.228.xip.io
       skip_ssl_validation: null
     riak_cs:
-      register_route: null
+      register_route: false
   resource_pool: broker-pool
   template: broker-registrar
 - instances: 1
@@ -231,10 +228,10 @@ networks:
     range: 192.168.100.0/24
     reserved:
     - 192.168.100.1
-    - 192.168.100.3 - 192.168.100.140
-    - 192.168.100.160 - 192.168.100.254
+    - 192.168.100.3 - 192.168.100.170
+    - 192.168.100.180 - 192.168.100.254
     static:
-    - 192.168.100.141 - 192.168.100.146
+    - 192.168.100.171 - 192.168.100.179
 releases:
 - name: cf-riak-cs
   version: latest
@@ -262,4 +259,3 @@ update:
   canary_watch_time: 30000-240000
   max_in_flight: 3
   update_watch_time: 30000-600000
-
