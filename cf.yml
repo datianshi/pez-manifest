@@ -338,7 +338,7 @@ jobs:
   - name: metron_agent
     release: cf
   update: {}
-- instances: 2
+- instances: 0
   name: runner_z1
   networks:
   - name: cf1
@@ -554,7 +554,7 @@ properties:
     default_staging_security_groups:
     - public_networks
     - dns
-    default_to_diego_backend: false
+    default_to_diego_backend: true
     development_mode: false
     directories: null
     disable_custom_buildpacks: false

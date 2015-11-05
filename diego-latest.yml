@@ -151,7 +151,7 @@ config_from_cf:
   uaa:
     clients:
       ssh-proxy:
-        secret: null
+        secret: ssh-proxy-secret
     url: https://uaa.10.65.233.228.xip.io
 director_uuid: 802627e1-1d13-4164-a334-c1d06e6d2a69
 jobs:
@@ -205,7 +205,7 @@ jobs:
   update:
     max_in_flight: 1
     serial: true
-- instances: 1
+- instances: 3
   name: cell_z1
   networks:
   - name: diego1
@@ -1151,13 +1151,13 @@ properties:
           0ZEfFN0CgYEA8HTclSd7Z58J2F0qp4xZuD6nK/894LiIpAQAljfVVplrFSK3tyQD
           XCAuu6OuNcVb7RktBAzVJksp+fT5BeyYYm3KviaD2eXmRnJtpUSzN12VieyBX7Fx
           BSgiGpK7DUMYgC6mggfL8bPrhWG3B39Q+VC8B6K/Y29xe8HZQThhick=
-          -----END RSA PRIVATE KEY-----        
+          -----END RSA PRIVATE KEY-----
         client_session_cache_size: null
         max_idle_conns_per_host: null
         require_ssl: false
       diego_credentials: ""
       enable_cf_auth: true
-      enable_diego_auth: true
+      enable_diego_auth: false
       host_key: |+
         -----BEGIN RSA PRIVATE KEY-----
         MIIEhgIBAAKB/DMF5qOW+fh608KhX7qBLNHHmfzCfOONd176Oaf8rGht5KdnoNge
@@ -1188,10 +1188,10 @@ properties:
         -----END RSA PRIVATE KEY-----
       servers:
       - 192.168.100.102
-      uaa_secret: null
+      uaa_secret: ssh-proxy-secret
       uaa_token_url: https://uaa.10.65.233.228.xip.io/oauth/token
     ssl:
-      skip_cert_verify: true
+      skip_cert_verify: false
     stager:
       bbs:
         api_location: bbs.service.cf.internal:8889
