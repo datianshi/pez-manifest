@@ -1,0 +1,128 @@
+---
+name: bosh
+
+releases:
+- name: bosh
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=243
+  sha1: 94e2514f59a6ff290ae35de067a966ba779688d7
+- name: bosh-vcloud-cpi
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-vcloud-cpi-release?v=18
+  sha1: 1ab372357875ee8b5cd978c5f8e08ac7f5da81ca
+
+resource_pools:
+- name: vms
+  network: private
+  stemcell:
+    url: https://bosh.io/d/stemcells/bosh-vcloud-esxi-ubuntu-trusty-go_agent?v=3012
+    sha1: 34b02c07cda0fe1f440855187f72dfe93903e9e1
+  cloud_properties:
+    cpu: 2
+    ram: 4_096
+    disk: 20_000
+  env:
+    bosh:
+      # c1oudc0w is a default password for vcap user
+      password: "$6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0"
+
+disk_pools:
+- name: disks
+  disk_size: 20_000
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: 10.65.233.128/25
+    gateway: 10.65.233.129
+    dns: [10.65.233.129]
+    cloud_properties: {name: sding-rognet-routed} # <--- Replace with Network name
+
+jobs:
+- name: bosh
+  instances: 1
+
+  templates:
+  - {name: nats, release: bosh}
+  - {name: redis, release: bosh}
+  - {name: postgres, release: bosh}
+  - {name: blobstore, release: bosh}
+  - {name: director, release: bosh}
+  - {name: health_monitor, release: bosh}
+  - {name: vcloud_cpi, release: bosh-vcloud-cpi}
+
+  resource_pool: vms
+  persistent_disk_pool: disks
+
+  networks:
+  - {name: private, static_ips: [10.65.233.131]}
+
+  properties:
+    nats:
+      address: 127.0.0.1
+      user: nats
+      password: nats-password
+
+    redis:
+      listen_address: 127.0.0.1
+      address: 127.0.0.1
+      password: redis-password
+
+    postgres: &db
+      listen_address: 127.0.0.1
+      host: 127.0.0.1
+      user: postgres
+      password: postgres-password
+      database: bosh
+      adapter: postgres
+
+    blobstore:
+      address: 10.65.233.131
+      port: 25250
+      provider: dav
+      director: {user: director, password: director-password}
+      agent: {user: agent, password: agent-password}
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: *db
+      cpi_job: vcloud_cpi
+      max_threads: 4
+      user_management:
+        provider: local
+        local:
+          users:
+          - {name: admin, password: admin}
+          - {name: hm, password: hm-password}
+
+    hm:
+      director_account: {user: hm, password: hm-password}
+      resurrector_enabled: true
+
+    vcd: &vcd # <--- Replace values below
+      url: https://sandbox.pez.pivotal.io
+      user: sding
+      password: shaozhen
+      entities:
+        organization: sding-org
+        virtual_datacenter: sding-ovdc
+        vapp_catalog: pcf_catalog
+        media_catalog: pcf_catalog
+        media_storage_profile: vCD-vSAN-Capacity-01
+        vm_metadata_key: cf-agent-env
+      control: {wait_max: 900}
+
+    agent: {mbus: "nats://nats:nats-password@10.65.233.131:4222"}
+
+    ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
+
+cloud_provider:
+  template: {name: vcloud_cpi, release: bosh-vcloud-cpi}
+
+  mbus: "https://mbus:mbus-password@10.65.233.131:6868"
+
+  properties:
+    vcd: *vcd
+    agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"}
+    blobstore: {provider: local, path: /var/vcap/micro_bosh/data/cache}
+    ntp: *ntp
