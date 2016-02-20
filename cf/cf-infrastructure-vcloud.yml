@@ -126,6 +126,9 @@ jobs:
   - name: nats_z2
     instances: 0
 
+  - name: runner_z1
+    instances: 0
+
   - name: nfs_z1
     instances: 1
     networks:

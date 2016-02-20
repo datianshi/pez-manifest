@@ -1,0 +1,90 @@
+iaas_settings:
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: diego1
+      subnets:
+      - cloud_properties:
+          name: cf-network
+        dns:
+        - 192.168.200.1
+        gateway: 192.168.200.1
+        range: 192.168.200.0/24
+        reserved:
+        - 192.168.200.2 - 192.168.200.60
+        - 192.168.200.90 - 192.168.200.254
+        static: []
+      type: manual
+    - name: diego2
+      subnets: []
+    - name: diego3
+      subnets: []
+  compilation_cloud_properties:
+    cpu: 2
+    disk: 8192
+    ram: 2048
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: access_z2
+      cloud_properties: {}
+    - name: access_z3
+      cloud_properties: {}
+    - name: brain_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: brain_z2
+      cloud_properties: {}
+    - name: brain_z3
+      cloud_properties: {}
+    - name: cc_bridge_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: cc_bridge_z2
+      cloud_properties: {}
+    - name: cc_bridge_z3
+      cloud_properties: {}
+    - name: cell_z1
+      cloud_properties:
+        cpu: 2
+        disk: 40960
+        ram: 8192
+    - name: cell_z2
+      cloud_properties: {}
+    - name: cell_z3
+      cloud_properties: {}
+    - name: database_z1
+      cloud_properties:
+        cpu: 1
+        disk: 40960
+        ram: 2048
+    - name: database_z2
+      cloud_properties: {}
+    - name: database_z3
+      cloud_properties: {}
+    - name: route_emitter_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: route_emitter_z2
+      cloud_properties: {}
+    - name: route_emitter_z3
+      cloud_properties: {}
+    - name: colocated_z1
+      cloud_properties:
+        cpu: 1
+        disk: 10240
+        ram: 2048
+    - name: colocated_z2
+      cloud_properties: {}
+    - name: colocated_z3
+      cloud_properties: {}
