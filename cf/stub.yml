@@ -1,0 +1,197 @@
+---
+meta:
+  environment: cloudfoundry
+
+director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
+networks:
+  - name: cf1
+    type: manual
+    subnets:
+      - range: 192.168.200.0/24
+        gateway: 192.168.200.1
+        dns: [192.168.200.1]
+        reserved:
+          - 192.168.200.60 - 192.168.200.254
+        static:
+          - 192.168.200.2 - 192.168.200.30
+        cloud_properties: {name: cf-network}
+  - name: cf2
+    type: manual
+    subnets: []
+
+properties:
+  ha_proxy:
+    ssl_pem: |
+      -----BEGIN CERTIFICATE-----
+      MIIDYTCCAkmgAwIBAgIVAMGhXjEOi0nfhRMW6U/m8JdtAtklMA0GCSqGSIb3DQEB
+      BQUAMB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMB4XDTE2MDIxOTAy
+      MjEzMVoXDTE4MDIxODAyMjEzMVowQDELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bp
+      dm90YWwxHzAdBgNVBAMMFiouMTAuNjUuMTkyLjI0OS54aXAuaW8wggEiMA0GCSqG
+      SIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9YuSkM9GuWHRYQy8G/6eZ8TSV9Ei4XitO
+      sVm0SUZhAv8GfLGZibmvOHYuImbiobZgpOZ26Y0oCnY8uk0cniPEOo3/7GIwLkoc
+      E2UrTFcLkODdJGQEggF9xIHbDG1iBH4ADOVDv5WY/vnhsY0le7QNeYwTpdYrarec
+      WqLiusqQhnw4rkwkgeYJjUHNT6/oXkaBb/xx3FkXglChFxIXpvw2Ukkq1K2b0y6b
+      EBcD3Od1d3dogubP42b9Rybx1daT8HPBfo1yTAKi+dntipK33dzwBAgSkXUAJ3fL
+      pVQVGr1v000HdnRQrJrQkhZOt8T5Ya4IYFHkesJJLwPSE3IVFQqBAgMBAAGjczBx
+      MA4GA1UdDwEB/wQEAwIHgDAdBgNVHQ4EFgQUuZUe8c+VHNqNMGNTtqfhJx0Cb7Yw
+      HQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMCEGA1UdEQQaMBiCFiouMTAu
+      NjUuMTkyLjI0OS54aXAuaW8wDQYJKoZIhvcNAQEFBQADggEBAGZNLwaFGcSj5MIG
+      JUQhb/P+BtbbYJxFPU+UMdbwXc4xIncao2TUsXydVPNPdZPIpT17bcnTgx+KXxk7
+      npQPQi6foMaGYlGC8AqLiP9F53SBUNN0PcABKO67dqvj6RLIutWyEyvXS8gHcBZk
+      fjtFEFmxSgX4hHsl0ZcsQs0i/iUx0xO2pZr/YEzrAo+Iprb0coQc1AyGWvEIJ/Hi
+      aCyl9hCoeIej7WAeP9zSHrB1ZXUCQMagOYhxmf3WrjIFOzTS8qnUjPj1ANkQuCRe
+      M51aR2Npc/7BLIHCDypda+weHCBZlczrNmKrQcreOOJf3M/Z+jd0ab6QrdmmbrRi
+      ltBb0vw=
+      -----END CERTIFICATE-----
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEAvWLkpDPRrlh0WEMvBv+nmfE0lfRIuF4rTrFZtElGYQL/Bnyx
+      mYm5rzh2LiJm4qG2YKTmdumNKAp2PLpNHJ4jxDqN/+xiMC5KHBNlK0xXC5Dg3SRk
+      BIIBfcSB2wxtYgR+AAzlQ7+VmP754bGNJXu0DXmME6XWK2q3nFqi4rrKkIZ8OK5M
+      JIHmCY1BzU+v6F5GgW/8cdxZF4JQoRcSF6b8NlJJKtStm9MumxAXA9zndXd3aILm
+      z+Nm/Ucm8dXWk/BzwX6NckwCovnZ7YqSt93c8AQIEpF1ACd3y6VUFRq9b9NNB3Z0
+      UKya0JIWTrfE+WGuCGBR5HrCSS8D0hNyFRUKgQIDAQABAoIBAQCTyEuqZlVEuvlu
+      tl5IE87xLWtfaFQmqjUZHwNkz5j/sprWsQ7VRMeEl4aA0Y9/YbkzCPpd6Dmh+Sfy
+      k14A6tX2Fcsg3ZBxEG38IpZbhyKVf+Q4LGFvsxL+1QyPpc7lIaRA3c85YpKV5MGR
+      AD+n9DO4IBTScCIDly7X71ITorbWtwIAE8MFm3viG5JeMliY3ygWCTfSFILaebte
+      vPYSfuBmscoddxWw3yYel5uSZqBOlgCrWsjynoNK/ozwt6SnB7GmxBLcSKuAl+OI
+      lBldpelVI/rVCv2K9D7DzeuRYaLMpdXsIZV97laMcLZJZELzak5FeHRBnsljE0b9
+      wbEhtLcRAoGBAO8jV6pGD1TwQz0bo9wMmxAjtJ0RYDOUTIs3WlWyOu9hVQ7/7VOZ
+      3+jJW0eKX4wW8JDIKNtTZfEM3OaKFtfSmotP9bARmmJElrHG310LWMThpYcd0QS6
+      fkGgPreTsMKmzrYDvrVVKs12eHyos2WiXKxVmV15OY/XW1zq2EvhLoIvAoGBAMq9
+      fJTOiU5VJFoQsvEi/LwoLsItGmMmW7n1DxF/pedHtnCx+duFBQnhVgIvF2yF9izN
+      RGDCWspe2vGoGTvp3ICW6Oi/zsL7onhsO23PmsjT+WKnytubsV9gqOmE7p05Yu13
+      S7D37Hb6EjfIhlfQDhvewUysCQ5koMMSMq9TkYJPAoGBAJbLZIZcs2JONzgba9Jg
+      qI8e1M+Om2krBLFs8CvFveAhMi/JNnBXQZhbEJImMWX3OS8y6ICVMF02TT2aqhji
+      Fs3uV/D0yLNaqOPlkgfsFcfgui5foOQobWEYmTPNj9LOuN6RsfpKgDkbkZKaFrXq
+      EiIhwBnvTVrk5BnNhSMkFd3FAoGBAK/zRWSr3rQx5kuYBISMNcViJjp1BFqaVq8L
+      hBlOrAAN18L0YwDl79qESq24it6vYFe/iaFj64GIUwG5PrUloC2lStt8Y4gK9RUH
+      8Ye6zf2PIfdB4ic3dvdsnwuTR7cBr96hUvpyIDGdlCP/jsA1G5mKeD3/bBimsnK5
+      n21T3Iu3AoGAczjkbZ71hXVPwhimFc2AbXQKMutvaRtLQ8v6ecekZmxAikS3HZEc
+      zXevmTwCPrXzyeI3wHFYqif+85EIPnKAZMZwvNsRcCDAMXxDLcByblnc9cCMNJx1
+      KEyjd3GS0oUYbZYv47McqKmVQEaK8IdQccD1ZIB1djn8YR7zqGm5vtg=
+      -----END RSA PRIVATE KEY-----
+  loggregator_endpoint:
+    shared_secret: secret
+  cc:
+    default_app_memory: 256
+    bulk_api_password: bulk-password
+    internal_api_password: internal-password
+    staging_upload_user: upload-user
+    staging_upload_password: upload-password
+    db_encryption_key: db-encryption-key
+  uaa:
+    catalina_opts: -Xmx512m
+    jwt:
+      signing_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIICXAIBAAKBgQDHFr+KICms+tuT1OXJwhCUmR2dKVy7psa8xzElSyzqx7oJyfJ1
+        JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMXqHxf+ZH9BL1gk9Y6kCnbM5R6
+        0gfwjyW1/dQPjOzn9N394zd2FJoFHwdq9Qs0wBugspULZVNRxq7veq/fzwIDAQAB
+        AoGBAJ8dRTQFhIllbHx4GLbpTQsWXJ6w4hZvskJKCLM/o8R4n+0W45pQ1xEiYKdA
+        Z/DRcnjltylRImBD8XuLL8iYOQSZXNMb1h3g5/UGbUXLmCgQLOUUlnYt34QOQm+0
+        KvUqfMSFBbKMsYBAoQmNdTHBaz3dZa8ON9hh/f5TT8u0OWNRAkEA5opzsIXv+52J
+        duc1VGyX3SwlxiE2dStW8wZqGiuLH142n6MKnkLU4ctNLiclw6BZePXFZYIK+AkE
+        xQ+k16je5QJBAN0TIKMPWIbbHVr5rkdUqOyezlFFWYOwnMmw/BKa1d3zp54VP/P8
+        +5aQ2d4sMoKEOfdWH7UqMe3FszfYFvSu5KMCQFMYeFaaEEP7Jn8rGzfQ5HQd44ek
+        lQJqmq6CE2BXbY/i34FuvPcKU70HEEygY6Y9d8J3o6zQ0K9SYNu+pcXt4lkCQA3h
+        jJQQe5uEGJTExqed7jllQ0khFJzLMx0K6tj0NeeIzAaGCQz13oo2sCdeGRHO4aDh
+        HH6Qlq/6UOV5wP8+GAcCQFgRCcB+hrje8hfEEefHcFpyKH+5g1Eu1k0mLrxK2zd+
+        4SlotYRHgPCEubokb2S1zfZDWIXW3HmggnGgM949TlY=
+        -----END RSA PRIVATE KEY-----
+      verification_key: |
+        -----BEGIN PUBLIC KEY-----
+        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHFr+KICms+tuT1OXJwhCUmR2d
+        KVy7psa8xzElSyzqx7oJyfJ1JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMX
+        qHxf+ZH9BL1gk9Y6kCnbM5R60gfwjyW1/dQPjOzn9N394zd2FJoFHwdq9Qs0wBug
+        spULZVNRxq7veq/fzwIDAQAB
+        -----END PUBLIC KEY-----
+    scim:
+      users:
+      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin
+      - services|services|scim.write,scim.read,openid,cloud_controller.admin
+    cc:
+      client_secret: secret
+    clients:
+      cloud_controller_username_lookup:
+        secret: secret
+      doppler:
+        secret: secret
+      gorouter:
+        secret: secret
+      login:
+        secret: secret
+      notifications:
+        secret: secret
+      cc_routing:
+        secret: secret
+      tcp_emitter:
+        secret: secret
+      tcp_router:
+        secret: secret
+    batch:
+      password: admin
+      username: admin
+    admin:
+      client_secret: secret
+
+
+  template_only:
+    aws:
+      access_key_id: fake-id
+      secret_access_key: fake-key
+      availability_zone: fake-zone
+      subnet_ids:
+        cf1: subnet-fake1
+        services1: subnet-fake2
+
+  ccdb: &ccdb
+    db_scheme: postgres
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+
+  ccdb_ng: *ccdb
+
+  uaadb:
+    db_scheme: postgresql
+    port: 5524
+    roles:
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+  loggregator:
+    incoming_port: 3456
+
+  router:
+    status:
+      user: router
+      password: router
+    ssl_skip_validation: true
+
+  etcd_metrics_server:
+    nats:
+      password: nats
+      username: nats
+  nats:
+    password: nats
+    user: nats
+
+  metron_agent:
+    deployment: cloudfoundry
+
+  domain: 10.65.192.249.xip.io
+  system_domain: 10.65.192.249.xip.io
+  system_domain_organization: system_domain
+  app_domains:
+  - 10.65.192.249.xip.io

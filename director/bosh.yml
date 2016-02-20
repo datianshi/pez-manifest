@@ -13,7 +13,7 @@ resource_pools:
 - name: vms
   network: private
   stemcell:
-    url: https://bosh.io/d/stemcells/bosh-vcloud-esxi-ubuntu-trusty-go_agent?v=3012
+    url: https://bosh.io/d/stemcells/bosh-vcloud-esxi-ubuntu-trusty-go_agent?v=3197
     sha1: 34b02c07cda0fe1f440855187f72dfe93903e9e1
   cloud_properties:
     cpu: 2
@@ -32,10 +32,10 @@ networks:
 - name: private
   type: manual
   subnets:
-  - range: 10.65.233.128/25
-    gateway: 10.65.233.129
-    dns: [10.65.233.129]
-    cloud_properties: {name: sding-rognet-routed} # <--- Replace with Network name
+  - range: 192.168.100.0/24
+    gateway: 192.168.100.1
+    dns: [192.168.100.1]
+    cloud_properties: {name: bosh-network} # <--- Replace with Network name
 
 jobs:
 - name: bosh
@@ -54,7 +54,7 @@ jobs:
   persistent_disk_pool: disks
 
   networks:
-  - {name: private, static_ips: [10.65.233.131]}
+  - {name: private, static_ips: [192.168.100.3]}
 
   properties:
     nats:
@@ -76,7 +76,7 @@ jobs:
       adapter: postgres
 
     blobstore:
-      address: 10.65.233.131
+      address: 192.168.100.3
       port: 25250
       provider: dav
       director: {user: director, password: director-password}
@@ -112,14 +112,14 @@ jobs:
         vm_metadata_key: cf-agent-env
       control: {wait_max: 900}
 
-    agent: {mbus: "nats://nats:nats-password@10.65.233.131:4222"}
+    agent: {mbus: "nats://nats:nats-password@192.168.100.3:4222"}
 
     ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
 
 cloud_provider:
   template: {name: vcloud_cpi, release: bosh-vcloud-cpi}
 
-  mbus: "https://mbus:mbus-password@10.65.233.131:6868"
+  mbus: "https://mbus:mbus-password@192.168.100.3:6868"
 
   properties:
     vcd: *vcd

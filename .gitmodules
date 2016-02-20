@@ -1,0 +1,3 @@
+[submodule "cf-release"]
+	path = cf-release
+	url = https://github.com/cloudfoundry/cf-release
