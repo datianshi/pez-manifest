@@ -476,7 +476,7 @@ jobs:
   - name: nfs_mounter
     release: cf
   update: {}
-- instances: 1
+- instances: 0
   name: hm9000_z1
   networks:
   - name: cf1
@@ -1640,7 +1640,7 @@ resource_pools:
     name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
     version: latest
 update:
-  canaries: 0
+  canaries: 1
   canary_watch_time: 30000-600000
   max_in_flight: 1
   serial: true

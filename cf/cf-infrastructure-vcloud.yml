@@ -126,9 +126,6 @@ jobs:
   - name: nats_z2
     instances: 0
 
-  - name: runner_z1
-    instances: 0
-
   - name: nfs_z1
     instances: 1
     networks:
@@ -184,7 +181,7 @@ jobs:
     instances: 1
     networks:
       - name: cf1
-        static_ips: (( static_ips(3) ))
+        static_ips: (( static_ips(3) ))        
 
   - name: etcd_z1
     instances: 2

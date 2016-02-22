@@ -1,62 +1,68 @@
 ---
+update:
+  canaries: 1
 meta:
   environment: cloudfoundry
 
 director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
 jobs:
-  ha_proxy_z1:
-    properties:
-      ha_proxy:
-        ssl_pem: |
-          -----BEGIN CERTIFICATE-----
-          MIIDYTCCAkmgAwIBAgIVAMGhXjEOi0nfhRMW6U/m8JdtAtklMA0GCSqGSIb3DQEB
-          BQUAMB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMB4XDTE2MDIxOTAy
-          MjEzMVoXDTE4MDIxODAyMjEzMVowQDELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bp
-          dm90YWwxHzAdBgNVBAMMFiouMTAuNjUuMTkyLjI0OS54aXAuaW8wggEiMA0GCSqG
-          SIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9YuSkM9GuWHRYQy8G/6eZ8TSV9Ei4XitO
-          sVm0SUZhAv8GfLGZibmvOHYuImbiobZgpOZ26Y0oCnY8uk0cniPEOo3/7GIwLkoc
-          E2UrTFcLkODdJGQEggF9xIHbDG1iBH4ADOVDv5WY/vnhsY0le7QNeYwTpdYrarec
-          WqLiusqQhnw4rkwkgeYJjUHNT6/oXkaBb/xx3FkXglChFxIXpvw2Ukkq1K2b0y6b
-          EBcD3Od1d3dogubP42b9Rybx1daT8HPBfo1yTAKi+dntipK33dzwBAgSkXUAJ3fL
-          pVQVGr1v000HdnRQrJrQkhZOt8T5Ya4IYFHkesJJLwPSE3IVFQqBAgMBAAGjczBx
-          MA4GA1UdDwEB/wQEAwIHgDAdBgNVHQ4EFgQUuZUe8c+VHNqNMGNTtqfhJx0Cb7Yw
-          HQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMCEGA1UdEQQaMBiCFiouMTAu
-          NjUuMTkyLjI0OS54aXAuaW8wDQYJKoZIhvcNAQEFBQADggEBAGZNLwaFGcSj5MIG
-          JUQhb/P+BtbbYJxFPU+UMdbwXc4xIncao2TUsXydVPNPdZPIpT17bcnTgx+KXxk7
-          npQPQi6foMaGYlGC8AqLiP9F53SBUNN0PcABKO67dqvj6RLIutWyEyvXS8gHcBZk
-          fjtFEFmxSgX4hHsl0ZcsQs0i/iUx0xO2pZr/YEzrAo+Iprb0coQc1AyGWvEIJ/Hi
-          aCyl9hCoeIej7WAeP9zSHrB1ZXUCQMagOYhxmf3WrjIFOzTS8qnUjPj1ANkQuCRe
-          M51aR2Npc/7BLIHCDypda+weHCBZlczrNmKrQcreOOJf3M/Z+jd0ab6QrdmmbrRi
-          ltBb0vw=
-          -----END CERTIFICATE-----
-          -----BEGIN RSA PRIVATE KEY-----
-          MIIEpQIBAAKCAQEAvWLkpDPRrlh0WEMvBv+nmfE0lfRIuF4rTrFZtElGYQL/Bnyx
-          mYm5rzh2LiJm4qG2YKTmdumNKAp2PLpNHJ4jxDqN/+xiMC5KHBNlK0xXC5Dg3SRk
-          BIIBfcSB2wxtYgR+AAzlQ7+VmP754bGNJXu0DXmME6XWK2q3nFqi4rrKkIZ8OK5M
-          JIHmCY1BzU+v6F5GgW/8cdxZF4JQoRcSF6b8NlJJKtStm9MumxAXA9zndXd3aILm
-          z+Nm/Ucm8dXWk/BzwX6NckwCovnZ7YqSt93c8AQIEpF1ACd3y6VUFRq9b9NNB3Z0
-          UKya0JIWTrfE+WGuCGBR5HrCSS8D0hNyFRUKgQIDAQABAoIBAQCTyEuqZlVEuvlu
-          tl5IE87xLWtfaFQmqjUZHwNkz5j/sprWsQ7VRMeEl4aA0Y9/YbkzCPpd6Dmh+Sfy
-          k14A6tX2Fcsg3ZBxEG38IpZbhyKVf+Q4LGFvsxL+1QyPpc7lIaRA3c85YpKV5MGR
-          AD+n9DO4IBTScCIDly7X71ITorbWtwIAE8MFm3viG5JeMliY3ygWCTfSFILaebte
-          vPYSfuBmscoddxWw3yYel5uSZqBOlgCrWsjynoNK/ozwt6SnB7GmxBLcSKuAl+OI
-          lBldpelVI/rVCv2K9D7DzeuRYaLMpdXsIZV97laMcLZJZELzak5FeHRBnsljE0b9
-          wbEhtLcRAoGBAO8jV6pGD1TwQz0bo9wMmxAjtJ0RYDOUTIs3WlWyOu9hVQ7/7VOZ
-          3+jJW0eKX4wW8JDIKNtTZfEM3OaKFtfSmotP9bARmmJElrHG310LWMThpYcd0QS6
-          fkGgPreTsMKmzrYDvrVVKs12eHyos2WiXKxVmV15OY/XW1zq2EvhLoIvAoGBAMq9
-          fJTOiU5VJFoQsvEi/LwoLsItGmMmW7n1DxF/pedHtnCx+duFBQnhVgIvF2yF9izN
-          RGDCWspe2vGoGTvp3ICW6Oi/zsL7onhsO23PmsjT+WKnytubsV9gqOmE7p05Yu13
-          S7D37Hb6EjfIhlfQDhvewUysCQ5koMMSMq9TkYJPAoGBAJbLZIZcs2JONzgba9Jg
-          qI8e1M+Om2krBLFs8CvFveAhMi/JNnBXQZhbEJImMWX3OS8y6ICVMF02TT2aqhji
-          Fs3uV/D0yLNaqOPlkgfsFcfgui5foOQobWEYmTPNj9LOuN6RsfpKgDkbkZKaFrXq
-          EiIhwBnvTVrk5BnNhSMkFd3FAoGBAK/zRWSr3rQx5kuYBISMNcViJjp1BFqaVq8L
-          hBlOrAAN18L0YwDl79qESq24it6vYFe/iaFj64GIUwG5PrUloC2lStt8Y4gK9RUH
-          8Ye6zf2PIfdB4ic3dvdsnwuTR7cBr96hUvpyIDGdlCP/jsA1G5mKeD3/bBimsnK5
-          n21T3Iu3AoGAczjkbZ71hXVPwhimFc2AbXQKMutvaRtLQ8v6ecekZmxAikS3HZEc
-          zXevmTwCPrXzyeI3wHFYqif+85EIPnKAZMZwvNsRcCDAMXxDLcByblnc9cCMNJx1
-          KEyjd3GS0oUYbZYv47McqKmVQEaK8IdQccD1ZIB1djn8YR7zqGm5vtg=
-          -----END RSA PRIVATE KEY-----
-  smoke_tests:
+- name: hm9000_z1
+  instances: 0  
+- name: ha_proxy_z1
+  properties:
+    ha_proxy:
+      ssl_pem: |
+        -----BEGIN CERTIFICATE-----
+        MIIDYTCCAkmgAwIBAgIVAMGhXjEOi0nfhRMW6U/m8JdtAtklMA0GCSqGSIb3DQEB
+        BQUAMB8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdQaXZvdGFsMB4XDTE2MDIxOTAy
+        MjEzMVoXDTE4MDIxODAyMjEzMVowQDELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bp
+        dm90YWwxHzAdBgNVBAMMFiouMTAuNjUuMTkyLjI0OS54aXAuaW8wggEiMA0GCSqG
+        SIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9YuSkM9GuWHRYQy8G/6eZ8TSV9Ei4XitO
+        sVm0SUZhAv8GfLGZibmvOHYuImbiobZgpOZ26Y0oCnY8uk0cniPEOo3/7GIwLkoc
+        E2UrTFcLkODdJGQEggF9xIHbDG1iBH4ADOVDv5WY/vnhsY0le7QNeYwTpdYrarec
+        WqLiusqQhnw4rkwkgeYJjUHNT6/oXkaBb/xx3FkXglChFxIXpvw2Ukkq1K2b0y6b
+        EBcD3Od1d3dogubP42b9Rybx1daT8HPBfo1yTAKi+dntipK33dzwBAgSkXUAJ3fL
+        pVQVGr1v000HdnRQrJrQkhZOt8T5Ya4IYFHkesJJLwPSE3IVFQqBAgMBAAGjczBx
+        MA4GA1UdDwEB/wQEAwIHgDAdBgNVHQ4EFgQUuZUe8c+VHNqNMGNTtqfhJx0Cb7Yw
+        HQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMCEGA1UdEQQaMBiCFiouMTAu
+        NjUuMTkyLjI0OS54aXAuaW8wDQYJKoZIhvcNAQEFBQADggEBAGZNLwaFGcSj5MIG
+        JUQhb/P+BtbbYJxFPU+UMdbwXc4xIncao2TUsXydVPNPdZPIpT17bcnTgx+KXxk7
+        npQPQi6foMaGYlGC8AqLiP9F53SBUNN0PcABKO67dqvj6RLIutWyEyvXS8gHcBZk
+        fjtFEFmxSgX4hHsl0ZcsQs0i/iUx0xO2pZr/YEzrAo+Iprb0coQc1AyGWvEIJ/Hi
+        aCyl9hCoeIej7WAeP9zSHrB1ZXUCQMagOYhxmf3WrjIFOzTS8qnUjPj1ANkQuCRe
+        M51aR2Npc/7BLIHCDypda+weHCBZlczrNmKrQcreOOJf3M/Z+jd0ab6QrdmmbrRi
+        ltBb0vw=
+        -----END CERTIFICATE-----
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpQIBAAKCAQEAvWLkpDPRrlh0WEMvBv+nmfE0lfRIuF4rTrFZtElGYQL/Bnyx
+        mYm5rzh2LiJm4qG2YKTmdumNKAp2PLpNHJ4jxDqN/+xiMC5KHBNlK0xXC5Dg3SRk
+        BIIBfcSB2wxtYgR+AAzlQ7+VmP754bGNJXu0DXmME6XWK2q3nFqi4rrKkIZ8OK5M
+        JIHmCY1BzU+v6F5GgW/8cdxZF4JQoRcSF6b8NlJJKtStm9MumxAXA9zndXd3aILm
+        z+Nm/Ucm8dXWk/BzwX6NckwCovnZ7YqSt93c8AQIEpF1ACd3y6VUFRq9b9NNB3Z0
+        UKya0JIWTrfE+WGuCGBR5HrCSS8D0hNyFRUKgQIDAQABAoIBAQCTyEuqZlVEuvlu
+        tl5IE87xLWtfaFQmqjUZHwNkz5j/sprWsQ7VRMeEl4aA0Y9/YbkzCPpd6Dmh+Sfy
+        k14A6tX2Fcsg3ZBxEG38IpZbhyKVf+Q4LGFvsxL+1QyPpc7lIaRA3c85YpKV5MGR
+        AD+n9DO4IBTScCIDly7X71ITorbWtwIAE8MFm3viG5JeMliY3ygWCTfSFILaebte
+        vPYSfuBmscoddxWw3yYel5uSZqBOlgCrWsjynoNK/ozwt6SnB7GmxBLcSKuAl+OI
+        lBldpelVI/rVCv2K9D7DzeuRYaLMpdXsIZV97laMcLZJZELzak5FeHRBnsljE0b9
+        wbEhtLcRAoGBAO8jV6pGD1TwQz0bo9wMmxAjtJ0RYDOUTIs3WlWyOu9hVQ7/7VOZ
+        3+jJW0eKX4wW8JDIKNtTZfEM3OaKFtfSmotP9bARmmJElrHG310LWMThpYcd0QS6
+        fkGgPreTsMKmzrYDvrVVKs12eHyos2WiXKxVmV15OY/XW1zq2EvhLoIvAoGBAMq9
+        fJTOiU5VJFoQsvEi/LwoLsItGmMmW7n1DxF/pedHtnCx+duFBQnhVgIvF2yF9izN
+        RGDCWspe2vGoGTvp3ICW6Oi/zsL7onhsO23PmsjT+WKnytubsV9gqOmE7p05Yu13
+        S7D37Hb6EjfIhlfQDhvewUysCQ5koMMSMq9TkYJPAoGBAJbLZIZcs2JONzgba9Jg
+        qI8e1M+Om2krBLFs8CvFveAhMi/JNnBXQZhbEJImMWX3OS8y6ICVMF02TT2aqhji
+        Fs3uV/D0yLNaqOPlkgfsFcfgui5foOQobWEYmTPNj9LOuN6RsfpKgDkbkZKaFrXq
+        EiIhwBnvTVrk5BnNhSMkFd3FAoGBAK/zRWSr3rQx5kuYBISMNcViJjp1BFqaVq8L
+        hBlOrAAN18L0YwDl79qESq24it6vYFe/iaFj64GIUwG5PrUloC2lStt8Y4gK9RUH
+        8Ye6zf2PIfdB4ic3dvdsnwuTR7cBr96hUvpyIDGdlCP/jsA1G5mKeD3/bBimsnK5
+        n21T3Iu3AoGAczjkbZ71hXVPwhimFc2AbXQKMutvaRtLQ8v6ecekZmxAikS3HZEc
+        zXevmTwCPrXzyeI3wHFYqif+85EIPnKAZMZwvNsRcCDAMXxDLcByblnc9cCMNJx1
+        KEyjd3GS0oUYbZYv47McqKmVQEaK8IdQccD1ZIB1djn8YR7zqGm5vtg=
+        -----END RSA PRIVATE KEY-----
+- name: runner_z1
+  instances: 0
+- smoke_tests:
     api: (( "https://api."properties.domain ))
     apps_domain: (( properties.apps_domain[0] ))
     user: admin
