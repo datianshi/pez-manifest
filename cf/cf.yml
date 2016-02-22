@@ -789,7 +789,16 @@ jobs:
   name: smoke_tests
   networks:
   - name: cf1
-  properties: {}
+  properties:
+    api: https://api.10.65.192.249.xip.io
+    apps_domain: 10.65.192.249.xip.io
+    org: CF_SMOKE_TEST_ORG
+    password: admin
+    skip_ssl_validation: true
+    space: CF_SMOKE_TEST_SPACE
+    use_existing_org: false
+    use_existing_space: false
+    user: admin
   resource_pool: small_errand
   templates:
   - name: smoke-tests

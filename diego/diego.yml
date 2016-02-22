@@ -114,7 +114,7 @@ jobs:
   update:
     max_in_flight: 1
     serial: true
-- instances: 1
+- instances: 3
   name: cell_z1
   networks:
   - name: diego1

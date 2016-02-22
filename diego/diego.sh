@@ -11,6 +11,7 @@ spiff merge \
   manifest-generation/bosh-lite-stubs/property-overrides.yml \
   manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
   vcloud-iaas-settings.yml \
+  stub.yml \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 

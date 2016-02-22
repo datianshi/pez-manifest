@@ -3,11 +3,12 @@ update:
   canaries: 1
 meta:
   environment: cloudfoundry
+  domain: 10.65.192.249.xip.io
 
 director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
 jobs:
 - name: hm9000_z1
-  instances: 0  
+  instances: 0
 - name: ha_proxy_z1
   properties:
     ha_proxy:
@@ -62,9 +63,10 @@ jobs:
         -----END RSA PRIVATE KEY-----
 - name: runner_z1
   instances: 0
-- smoke_tests:
-    api: (( "https://api."properties.domain ))
-    apps_domain: (( properties.apps_domain[0] ))
+- name: smoke_tests
+  properties:
+    api: (( "https://api." meta.domain ))
+    apps_domain: (( meta.domain ))
     user: admin
     password: admin
     org: CF_SMOKE_TEST_ORG
@@ -211,11 +213,11 @@ properties:
   metron_agent:
     deployment: cloudfoundry
 
-  domain: 10.65.192.249.xip.io
-  system_domain: 10.65.192.249.xip.io
+  domain: (( meta.domain ))
+  system_domain: (( meta.domain ))
   system_domain_organization: system_domain
   app_domains:
-  - 10.65.192.249.xip.io
+  - (( meta.domain ))
   consul:
     encrypt_keys:
       - Atzo3VBv+YVDzQAzlQRPRA==
