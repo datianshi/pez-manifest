@@ -1,3 +1,7 @@
 jobs:
 - name: cell_z1
   instances: 3
+properties:
+  syslog_daemon_config:
+    address: 192.168.200.93
+    port: 5514

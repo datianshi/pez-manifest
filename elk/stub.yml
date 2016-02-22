@@ -1,0 +1,38 @@
+---
+meta:
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch
+director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: 102400
+
+- name: elasticsearch_data
+  disk_size: 102400
+
+- name: queue
+  disk_size: 102400
+
+- name: cluster_monitor
+  disk_size: 102400
+
+networks:
+- name: default
+  subnets:
+    - range: 192.168.200.0/24
+      gateway: 192.168.200.1
+      dns: [192.168.200.1]
+      reserved:
+        - 192.168.200.2 - 192.168.200.90
+        - 192.168.200.130 - 192.168.200.254
+      static:
+        - 192.168.200.91 - 192.168.200.110
+      cloud_properties: {name: cf-network}

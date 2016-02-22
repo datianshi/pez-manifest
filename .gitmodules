@@ -4,3 +4,6 @@
 [submodule "diego-release"]
 	path = diego-release
 	url = https://github.com/cloudfoundry-incubator/diego-release
+[submodule "logsearch-boshrelease"]
+	path = logsearch-boshrelease
+	url = git@github.com:logsearch/logsearch-boshrelease.git

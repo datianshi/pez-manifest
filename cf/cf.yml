@@ -1371,7 +1371,9 @@ properties:
   ssl:
     skip_cert_verify: true
   support_address: http://support.cloudfoundry.com
-  syslog_daemon_config: null
+  syslog_daemon_config:
+    address: 192.168.200.93
+    port: 5514
   system_domain: 10.65.192.249.xip.io
   system_domain_organization: system_domain
   traffic_controller:

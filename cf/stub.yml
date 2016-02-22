@@ -361,3 +361,6 @@ properties:
       FswLS6coxP5optNulBjEogYA4FV6RW1KpJtzOK9pYbYquYZ7s7jJob99FAG/S4w+
       32Mj4ovtRtbWPQdq5SNnSWOrp92FSXSZAWTIpGAZC2jaNg6ofV/XNw==
       -----END RSA PRIVATE KEY-----
+  syslog_daemon_config:
+    address: 192.168.200.93
+    port: 5514

@@ -1,0 +1,398 @@
+compilation:
+  cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 4096
+  network: default
+  reuse_compilation_vms: true
+  workers: 4
+director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
+disk_pools:
+- disk_size: 102400
+  name: elasticsearch_master
+- disk_size: 102400
+  name: elasticsearch_data
+- disk_size: 102400
+  name: queue
+- disk_size: 102400
+  name: cluster_monitor
+jobs:
+- instances: 1
+  name: elasticsearch_master
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.200.91
+  persistent_disk_pool: elasticsearch_master
+  properties:
+    elasticsearch:
+      node:
+        allow_data: false
+        allow_master: true
+  release: logsearch
+  resource_pool: elasticsearch_master
+  templates:
+  - name: elasticsearch
+    release: logsearch
+  - name: api
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 0
+  name: haproxy
+  networks:
+  - name: default
+  properties:
+    haproxy:
+      backend_servers:
+      - 192.168.200.93
+  release: logsearch
+  resource_pool: haproxy
+  templates:
+  - name: haproxy
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 0
+  name: cluster_monitor
+  networks:
+  - name: default
+  persistent_disk_pool: cluster_monitor
+  properties:
+    curator:
+      elasticsearch_host: 127.0.0.1
+      elasticsearch_port: 9200
+      purge_logs:
+        retention_period: 7
+    elasticsearch:
+      allow_data: true
+      allow_master: true
+      cluster_name: monitor
+      data_hosts:
+      - 127.0.0.1
+      master_hosts:
+      - 127.0.0.1
+    elasticsearch_config:
+      bulk_data_files: []
+      elasticsearch:
+        host: 127.0.0.1
+        port: 9200
+      templates:
+      - shards-and-replicas: '{ "template" : "*", "order" : 99, "settings" : { "number_of_shards"
+          : 1, "number_of_replicas" : 0 } }'
+      - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
+    kibana:
+      elasticsearch: 127.0.0.1:9200
+      port: 5601
+    logstash_ingestor:
+      syslog:
+        port: 514
+    logstash_parser:
+      filters:
+      - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
+      use_local_elasticsearch: false
+    nats_to_syslog:
+      debug: true
+      nats:
+        machines:
+        - 10.0.0.6
+        password: nats-password
+        port: 4222
+        subject: '>'
+        user: nats
+      syslog:
+        host: 127.0.0.1
+        port: 514
+    redis:
+      host: 127.0.0.1
+  release: logsearch
+  resource_pool: elasticsearch_master
+  templates:
+  - name: queue
+    release: logsearch
+  - name: parser
+    release: logsearch
+  - name: ingestor_syslog
+    release: logsearch
+  - name: elasticsearch
+    release: logsearch
+  - name: elasticsearch_config
+    release: logsearch
+  - name: curator
+    release: logsearch
+  - name: kibana
+    release: logsearch
+  - name: nats_to_syslog
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 1
+  name: queue
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.200.94
+  persistent_disk_pool: queue
+  release: logsearch
+  resource_pool: queue
+  templates:
+  - name: queue
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: true
+- instances: 1
+  name: kibana
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.200.96
+  release: logsearch
+  resource_pool: kibana
+  templates:
+  - name: kibana
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 1
+  name: elasticsearch_data
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.200.92
+  persistent_disk_pool: elasticsearch_data
+  properties:
+    elasticsearch:
+      node:
+        allow_data: true
+        allow_master: false
+  release: logsearch
+  resource_pool: elasticsearch_data
+  templates:
+  - name: elasticsearch
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 1
+  name: ingestor
+  networks:
+  - default:
+    - gateway
+    - dns
+    name: default
+    static_ips:
+    - 192.168.200.93
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: null
+  release: logsearch
+  resource_pool: ingestor
+  templates:
+  - name: ingestor_syslog
+    release: logsearch
+  - name: ingestor_relp
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+- instances: 1
+  name: parser
+  networks:
+  - name: default
+    static_ips:
+    - 192.168.200.95
+  release: logsearch
+  resource_pool: parser
+  templates:
+  - name: parser
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 4
+    serial: false
+- instances: 0
+  name: maintenance
+  networks:
+  - name: default
+  release: logsearch
+  resource_pool: elasticsearch_master
+  templates:
+  - name: elasticsearch_config
+    release: logsearch
+  - name: curator
+    release: logsearch
+  update:
+    canaries: 1
+    max_in_flight: 1
+    serial: false
+meta:
+  default_env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+name: logsearch
+networks:
+- name: default
+  subnets:
+  - cloud_properties:
+      name: cf-network
+    dns:
+    - 192.168.200.1
+    gateway: 192.168.200.1
+    range: 192.168.200.0/24
+    reserved:
+    - 192.168.200.2 - 192.168.200.90
+    - 192.168.200.130 - 192.168.200.254
+    static:
+    - 192.168.200.91 - 192.168.200.110
+properties:
+  api:
+    elasticsearch_host: 192.168.200.91:9200
+  curator:
+    elasticsearch_host: 192.168.200.91
+  elasticsearch:
+    cluster_name: logsearch
+    data_hosts:
+    - 192.168.200.92
+    exec: null
+    log_level: DEBUG
+    master_hosts:
+    - 192.168.200.91
+  elasticsearch_config:
+    elasticsearch:
+      host: 192.168.200.91
+    templates:
+    - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
+  kibana:
+    elasticsearch: 192.168.200.91:9200
+  logstash_ingestor:
+    debug: false
+  logstash_parser:
+    debug: false
+    use_local_elasticsearch: true
+  redis:
+    host: 192.168.200.94
+releases:
+- name: logsearch
+  version: latest
+resource_pools:
+- cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 4096
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: elasticsearch_master
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 30000
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: elasticsearch_data
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 10000
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: ingestor
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 10000
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: queue
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 10000
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: parser
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties:
+    cpu: 2
+    disk: 20000
+    ram: 2048
+  env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: kibana
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: maintenance
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: cluster_monitor
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+- env:
+    bosh:
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
+  name: haproxy
+  network: default
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-600000
+  max_errors: 1
+  max_in_flight: 1
+  serial: true
+  update_watch_time: 5000-600000
+

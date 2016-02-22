@@ -1,0 +1,96 @@
+jobs:
+- name: maintenance
+  instances: 0
+  resource_pool: elasticsearch_master
+
+- name: cluster_monitor
+  instances: 0
+  resource_pool: elasticsearch_master
+  
+- name: elasticsearch_master
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(0) ))
+  resource_pool: elasticsearch_master
+  persistent_disk_pool: elasticsearch_master
+
+- name: elasticsearch_data
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(1) ))
+  resource_pool: elasticsearch_data
+  persistent_disk_pool: elasticsearch_data
+
+- name: ingestor
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(2) ))
+  resource_pool: ingestor
+
+- name: queue
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
+  resource_pool: queue
+  persistent_disk_pool: queue
+
+- name: parser
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  resource_pool: parser
+
+- name: kibana
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(5) ))
+  resource_pool: kibana
+
+compilation:
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+resource_pools:
+- name: elasticsearch_master
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: elasticsearch_data
+  cloud_properties:
+    ram: 2048
+    disk: 30000
+    cpu: 2
+
+- name: queue
+  cloud_properties:
+    ram: 2048
+    disk: 10000
+    cpu: 2
+
+- name: ingestor
+  cloud_properties:
+    ram: 2048
+    disk: 10000
+    cpu: 2
+
+- name: parser
+  cloud_properties:
+    ram: 2048
+    disk: 10000
+    cpu: 2
+
+- name: kibana
+  cloud_properties:
+    ram: 2048
+    disk: 20000
+    cpu: 2

@@ -2113,8 +2113,8 @@ properties:
     port: 4222
     user: nats
   syslog_daemon_config:
-    address: null
-    port: null
+    address: 192.168.200.93
+    port: 5514
 releases:
 - name: diego
   version: latest
