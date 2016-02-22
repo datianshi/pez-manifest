@@ -65,15 +65,16 @@ jobs:
   instances: 0
 - name: smoke_tests
   properties:
-    api: (( "https://api." meta.domain ))
-    apps_domain: (( meta.domain ))
-    user: admin
-    password: admin
-    org: CF_SMOKE_TEST_ORG
-    space: CF_SMOKE_TEST_SPACE
-    skip_ssl_validation: true
-    use_existing_org: false
-    use_existing_space: false
+    smoke_tests:
+      api: (( "https://api." meta.domain ))
+      apps_domain: (( meta.domain ))
+      user: admin
+      password: admin
+      org: CF_SMOKE_TEST_ORG
+      space: CF_SMOKE_TEST_SPACE
+      skip_ssl_validation: true
+      use_existing_org: false
+      use_existing_space: false
 
 networks:
   - name: cf1
