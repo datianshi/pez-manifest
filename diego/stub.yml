@@ -5,3 +5,7 @@ properties:
   syslog_daemon_config:
     address: 192.168.200.93
     port: 5514
+        
+disk_pools:
+  - name: database_disks
+    disk_size: 102400

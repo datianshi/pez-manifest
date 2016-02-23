@@ -9,6 +9,8 @@ director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
 jobs:
 - name: hm9000_z1
   instances: 0
+- name: consul_z1
+  instances: 1
 - name: ha_proxy_z1
   properties:
     ha_proxy:
@@ -131,7 +133,7 @@ properties:
         -----END PUBLIC KEY-----
     scim:
       users:
-      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin
+      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
       - services|services|scim.write,scim.read,openid,cloud_controller.admin
     cc:
       client_secret: secret

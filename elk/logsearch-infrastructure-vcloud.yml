@@ -6,7 +6,7 @@ jobs:
 - name: cluster_monitor
   instances: 0
   resource_pool: elasticsearch_master
-  
+
 - name: elasticsearch_master
   instances: 1
   networks:
@@ -29,6 +29,19 @@ jobs:
   - name: default
     static_ips: (( static_ips(2) ))
   resource_pool: ingestor
+
+- name: ingestor_firehose
+  templates:
+  - { name: ingestor_cloudfoundry-firehose, release: logsearch-for-cloudfoundry}
+  instances: 1
+  resource_pool: ingestor
+  networks:
+  - name: default
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: null
 
 - name: queue
   instances: 1

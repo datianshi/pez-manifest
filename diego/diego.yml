@@ -9,7 +9,7 @@ compilation:
 director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
 disk_pools:
 - cloud_properties: {}
-  disk_size: 1024
+  disk_size: 102400
   name: database_disks
 jobs:
 - instances: 1
@@ -668,7 +668,6 @@ properties:
       servers:
         lan:
         - 192.168.200.19
-        - 192.168.200.20
     agent_cert: |+
       -----BEGIN CERTIFICATE-----
       MIIEITCCAgugAwIBAgIQTDMCJHBiQrY8hlM78doHTzALBgkqhkiG9w0BAQswEzER

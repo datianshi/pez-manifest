@@ -8,13 +8,12 @@ compilation:
   workers: 6
 director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
 jobs:
-- instances: 2
+- instances: 1
   name: consul_z1
   networks:
   - name: cf1
     static_ips:
     - 192.168.200.19
-    - 192.168.200.20
   persistent_disk: 1024
   properties:
     consul:
@@ -1054,7 +1053,6 @@ properties:
       servers:
         lan:
         - 192.168.200.19
-        - 192.168.200.20
     agent_cert: |+
       -----BEGIN CERTIFICATE-----
       MIIEITCCAgugAwIBAgIQTDMCJHBiQrY8hlM78doHTzALBgkqhkiG9w0BAQswEzER
@@ -1480,7 +1478,7 @@ properties:
       groups: null
       userids_enabled: true
       users:
-      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin
+      - admin|admin|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
       - services|services|scim.write,scim.read,openid,cloud_controller.admin
     spring_profiles: null
     ssl:
