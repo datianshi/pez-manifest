@@ -1,109 +1,40 @@
-jobs:
-- name: maintenance
-  instances: 0
-  resource_pool: elasticsearch_master
-
-- name: cluster_monitor
-  instances: 0
-  resource_pool: elasticsearch_master
-
-- name: elasticsearch_master
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(0) ))
-  resource_pool: elasticsearch_master
-  persistent_disk_pool: elasticsearch_master
-
-- name: elasticsearch_data
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(1) ))
-  resource_pool: elasticsearch_data
-  persistent_disk_pool: elasticsearch_data
-
-- name: ingestor
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(2) ))
-  resource_pool: ingestor
-
-- name: ingestor_firehose
-  templates:
-  - { name: ingestor_cloudfoundry-firehose, release: logsearch-for-cloudfoundry}
-  instances: 1
-  resource_pool: ingestor
-  networks:
-  - name: default
-  properties:
-    logstash_ingestor:
-      debug: false
-      relp:
-        port: null
-
-- name: queue
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(3) ))
-  resource_pool: queue
-  persistent_disk_pool: queue
-
-- name: parser
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(4) ))
-  resource_pool: parser
-
-- name: kibana
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(5) ))
-  resource_pool: kibana
-
 compilation:
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
+networks:
+- name: default
+  subnets:
+    - range: 192.168.200.0/24
+      gateway: 192.168.200.1
+      dns: [192.168.200.1]
+      reserved:
+        - 192.168.200.2 - 192.168.200.90
+        - 192.168.200.130 - 192.168.200.254
+      static:
+        - 192.168.200.91 - 192.168.200.110
+      cloud_properties: {name: cf-network}      
+
 resource_pools:
-- name: elasticsearch_master
+- name: tiny
+  cloud_properties:
+    ram: 2048
+    disk: 10000
+    cpu: 2
+- name: medium
+  cloud_properties:
+    ram: 2048
+    disk: 10000
+    cpu: 2
+- name: high_memory
   cloud_properties:
     ram: 4096
-    disk: 30000
-    cpu: 2
-
-- name: elasticsearch_data
-  cloud_properties:
-    ram: 2048
-    disk: 30000
-    cpu: 2
-
-- name: queue
-  cloud_properties:
-    ram: 2048
-    disk: 10000
-    cpu: 2
-
-- name: ingestor
-  cloud_properties:
-    ram: 2048
-    disk: 10000
-    cpu: 2
-
-- name: parser
-  cloud_properties:
-    ram: 2048
-    disk: 10000
-    cpu: 2
-
-- name: kibana
-  cloud_properties:
-    ram: 2048
     disk: 20000
     cpu: 2
+- name: high_cpu
+  cloud_properties:
+    ram: 4096
+    disk: 20000
+    cpu: 4
