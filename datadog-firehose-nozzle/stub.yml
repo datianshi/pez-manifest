@@ -1,0 +1,60 @@
+---
+meta:
+  environment: datadog-nozzle-pez
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+resource_pools:
+- name: datadog-firehose-nozzle
+  cloud_properties:
+      cpu: 2
+      disk: 4096
+      ram: 2048
+
+name: datadog-firehose-nozzle
+director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
+
+compilation:
+  workers: 1
+  reuse_compilation_vms: true
+  cloud_properties:
+      cpu: 2
+      disk: 4096
+      ram: 2048
+
+jobs:
+- name: datadog-firehose-nozzle
+  instances: 1
+  networks:
+  - name: datadog-firehose-nozzle-net
+
+networks:
+  - name: datadog-firehose-nozzle-net
+    type: manual
+    subnets:
+      - range: 192.168.200.0/24
+        gateway: 192.168.200.1
+        dns: [192.168.200.1]
+        reserved:
+          - 192.168.200.2 - 192.168.200.150
+          - 192.168.200.160 - 192.168.200.254
+        static:
+          - 192.168.200.151
+        cloud_properties: {name: cf-network}
+
+properties:
+  loggregator:
+    traffic_controller_url: wss://doppler.10.65.192.249.xip.io
+  datadog:
+    api_url: https://app.datadoghq.com/api/v1/series
+    api_key: 83c989cde9e087227db13f1d7279a6aa
+    flush_duration_seconds: 15
+    metric_prefix: bosh.pez-manifest.datadog.nozzle.
+  uaa:
+    url: https://uaa.10.65.192.249.xip.io
+    username: datadog-firehose-nozzle
+    password: secret
+  nozzle:
+    insecure_ssl_skip_verify: true
+    subscription_id: datadog-nozzle
+    deployment: (( meta.environment ))

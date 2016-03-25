@@ -154,6 +154,13 @@ properties:
         secret: secret
       tcp_router:
         secret: secret
+      datadog-firehose-nozzle:
+        access-token-validity: 1209600
+        authorized-grant-types: authorization_code,client_credentials,refresh_token
+        override: true
+        secret: secret
+        scope: openid,oauth.approvals,doppler.firehose
+        authorities: oauth.login,doppler.firehose
     batch:
       password: admin
       username: admin
